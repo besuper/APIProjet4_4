@@ -5,9 +5,7 @@ import java.util.Objects;
 public class Medicament {
 
     private int id;
-    private String code;
-    private String nom;
-    private String description;
+    private String code, nom, description;
     private double prixUnitaire;
 
     public Medicament(int id, String code, String nom, String description, double prixUnitaire) {
@@ -18,20 +16,40 @@ public class Medicament {
         this.prixUnitaire = prixUnitaire;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getCode() {
         return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getNom() {
         return nom;
     }
 
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public double getPrixUnitaire() {
         return prixUnitaire;
+    }
+
+    public void setPrixUnitaire(double prixUnitaire) {
+        this.prixUnitaire = prixUnitaire;
     }
 
     @Override

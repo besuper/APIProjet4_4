@@ -17,11 +17,23 @@ public class Infos {
         return quantite;
     }
 
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
+    }
+
     public Medicament getMedicament() {
         return medicament;
     }
 
+    public void setMedicament(Medicament medicament) {
+        this.medicament = medicament;
+    }
+
     public Prescription getPrescription() {
         return prescription;
+    }
+
+    public void setPrescription(Prescription prescription) {
+        this.prescription = prescription;
     }
 }

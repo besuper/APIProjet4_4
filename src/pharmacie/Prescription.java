@@ -19,19 +19,39 @@ public class Prescription {
         this.patient = patient;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getDatePrescription() {
         return datePrescription;
+    }
+
+    public void setDatePrescription(String datePrescription) {
+        this.datePrescription = datePrescription;
     }
 
     public Medecin getMedecin() {
         return medecin;
     }
 
+    public void setMedecin(Medecin medecin) {
+        this.medecin = medecin;
+    }
+
     public Patient getPatient() {
         return patient;
     }
 
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
     public List<Infos> getInfos() {
         return infos;
+    }
+
+    public void setInfos(List<Infos> infos) {
+        this.infos = infos;
     }
 }

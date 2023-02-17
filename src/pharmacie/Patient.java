@@ -7,9 +7,7 @@ import java.util.Objects;
 public class Patient {
 
     private int id;
-    private String nss;
-    private String nom;
-    private String prenom;
+    private String nss, nom, prenom;
     private String dateNaissance;
 
     private List<Prescription> prescription = new ArrayList<>();
@@ -22,24 +20,48 @@ public class Patient {
         this.dateNaissance = dateNaissance;
     }
 
-    public String getNom() {
-        return nom;
+    public int getId() {
+        return id;
     }
 
     public String getNss() {
         return nss;
     }
 
+    public void setNss(String nss) {
+        this.nss = nss;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     public String getPrenom() {
         return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 
     public String getDateNaissance() {
         return dateNaissance;
     }
 
+    public void setDateNaissance(String dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
+
     public List<Prescription> getPrescription() {
         return prescription;
+    }
+
+    public void setPrescription(List<Prescription> prescription) {
+        this.prescription = prescription;
     }
 
     @Override
