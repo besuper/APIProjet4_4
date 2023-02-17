@@ -4,14 +4,53 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Classe qui représente un patient
+ *
+ * @author Jayson
+ * @see Prescription
+ */
 public class Patient {
 
+    /**
+     * Identifiant unique du patient
+     */
     private int id;
-    private String nss, nom, prenom;
+
+    /**
+     * NSS du patient
+     */
+    private String nss;
+
+    /**
+     * Nom
+     */
+    private String nom;
+
+    /**
+     * Prénom
+     */
+    private String prenom;
+
+    /**
+     * Date de naissance
+     */
     private String dateNaissance;
 
+    /**
+     * Liste des prescriptions reçues
+     */
     private List<Prescription> prescription = new ArrayList<>();
 
+    /**
+     * Constructeur de la classe Patient
+     *
+     * @param id            Identifiant unique
+     * @param nss           NSS du patient
+     * @param nom           Nom
+     * @param prenom        Prénom
+     * @param dateNaissance Date de naissance
+     */
     public Patient(int id, String nss, String nom, String prenom, String dateNaissance) {
         this.id = id;
         this.nss = nss;
@@ -20,46 +59,101 @@ public class Patient {
         this.dateNaissance = dateNaissance;
     }
 
+    /**
+     * Retourne l'identifiant unique du patient
+     *
+     * @return Identifiant unique du patient
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Retourne le NSS du patient
+     *
+     * @return NSS
+     */
     public String getNss() {
         return nss;
     }
 
+    /**
+     * Définir le NSS du patient
+     *
+     * @param nss NSS
+     */
     public void setNss(String nss) {
         this.nss = nss;
     }
 
+    /**
+     * Retourne le nom du patient
+     *
+     * @return Nom
+     */
     public String getNom() {
         return nom;
     }
 
+    /**
+     * Définir le nom du patient
+     *
+     * @param nom Nom
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
+    /**
+     * Retourne le prénom du patient
+     *
+     * @return Prénom
+     */
     public String getPrenom() {
         return prenom;
     }
 
+    /**
+     * Définir le prénom du patient
+     *
+     * @param prenom Prénom
+     */
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
 
+    /**
+     * Retourne la date de naissance du patient
+     *
+     * @return Date de naissance
+     */
     public String getDateNaissance() {
         return dateNaissance;
     }
 
+    /**
+     * Définir la date de naissance du patient
+     *
+     * @param dateNaissance Date de naissance
+     */
     public void setDateNaissance(String dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
+    /**
+     * Retourne la liste des prescriptions reçues
+     *
+     * @return Liste de prescriptions
+     */
     public List<Prescription> getPrescription() {
         return prescription;
     }
 
+    /**
+     * Définir la liste des prescriptions reçues
+     *
+     * @param prescription Liste de prescriptions
+     */
     public void setPrescription(List<Prescription> prescription) {
         this.prescription = prescription;
     }
