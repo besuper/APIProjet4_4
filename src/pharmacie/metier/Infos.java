@@ -1,4 +1,4 @@
-package pharmacie;
+package pharmacie.metier;
 
 /**
  * Classe qui représente une information pour une precription

@@ -1,5 +1,6 @@
-package pharmacie;
+package pharmacie.metier;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Prescription {
     /**
      * Date de prescription
      */
-    private String datePrescription;
+    private LocalDate datePrescription;
 
     /**
      * Médecin qui a prescrit
@@ -45,7 +46,7 @@ public class Prescription {
      * @param medecin          Medecin qui prescrit
      * @param patient          Patient concerné
      */
-    public Prescription(int id, String datePrescription, Medecin medecin, Patient patient) {
+    public Prescription(int id, LocalDate datePrescription, Medecin medecin, Patient patient) {
         this.id = id;
         this.datePrescription = datePrescription;
         this.medecin = medecin;
@@ -66,7 +67,7 @@ public class Prescription {
      *
      * @return Date de prescription
      */
-    public String getDatePrescription() {
+    public LocalDate getDatePrescription() {
         return datePrescription;
     }
 
@@ -75,7 +76,7 @@ public class Prescription {
      *
      * @param datePrescription Date de prescription
      */
-    public void setDatePrescription(String datePrescription) {
+    public void setDatePrescription(LocalDate datePrescription) {
         this.datePrescription = datePrescription;
     }
 

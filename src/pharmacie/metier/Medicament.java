@@ -1,4 +1,4 @@
-package pharmacie;
+package pharmacie.metier;
 
 import java.util.Objects;
 

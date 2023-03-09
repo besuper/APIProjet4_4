@@ -1,4 +1,4 @@
-package pharmacie;
+package pharmacie.metier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,6 +164,17 @@ public class Medecin {
         if (o == null || getClass() != o.getClass()) return false;
         Medecin medecin = (Medecin) o;
         return Objects.equals(matricule, medecin.matricule);
+    }
+
+    @Override
+    public String toString() {
+        return "Medecin{" +
+                "id=" + id +
+                ", matricule='" + matricule + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", tel='" + tel + '\'' +
+                '}';
     }
 
     @Override

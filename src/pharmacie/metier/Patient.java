@@ -1,5 +1,6 @@
-package pharmacie;
+package pharmacie.metier;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class Patient {
     /**
      * Date de naissance
      */
-    private String dateNaissance;
+    private LocalDate dateNaissance;
 
     /**
      * Liste des prescriptions reçues
@@ -51,7 +52,7 @@ public class Patient {
      * @param prenom        Prénom
      * @param dateNaissance Date de naissance
      */
-    public Patient(int id, String nss, String nom, String prenom, String dateNaissance) {
+    public Patient(int id, String nss, String nom, String prenom, LocalDate dateNaissance) {
         this.id = id;
         this.nss = nss;
         this.nom = nom;
@@ -127,7 +128,7 @@ public class Patient {
      *
      * @return Date de naissance
      */
-    public String getDateNaissance() {
+    public LocalDate getDateNaissance() {
         return dateNaissance;
     }
 
@@ -136,7 +137,7 @@ public class Patient {
      *
      * @param dateNaissance Date de naissance
      */
-    public void setDateNaissance(String dateNaissance) {
+    public void setDateNaissance(LocalDate dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
@@ -164,6 +165,17 @@ public class Patient {
         if (o == null || getClass() != o.getClass()) return false;
         Patient patient = (Patient) o;
         return Objects.equals(nss, patient.nss);
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", nss='" + nss + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", dateNaissance='" + dateNaissance + '\'' +
+                '}';
     }
 
     @Override
