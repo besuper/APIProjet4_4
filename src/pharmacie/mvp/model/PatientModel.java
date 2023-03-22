@@ -1,6 +1,8 @@
 package pharmacie.mvp.model;
 
 import myconnections.DBConnection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pharmacie.metier.Medecin;
 import pharmacie.metier.Patient;
 import pharmacie.metier.Prescription;
@@ -14,12 +16,16 @@ public class PatientModel implements DAOPatient {
 
     private final Connection dbConnect;
 
+    private static final Logger logger = LogManager.getLogger(PatientModel.class);
+
     public PatientModel() {
         dbConnect = DBConnection.getConnection();
         if (dbConnect == null) {
-            System.err.println("erreur de connexion");
+            logger.error("erreur de connexion");
             System.exit(1);
         }
+
+        logger.info("connexion établie");
     }
 
     @Override
@@ -46,10 +52,12 @@ public class PatientModel implements DAOPatient {
                     int idPatient = rs.getInt(1);
 
                     return new Patient(idPatient, patient.getNss(), patient.getNom(), patient.getPrenom(), patient.getDateNaissance());
+                }else {
+                    logger.error("record introuvable");
                 }
             }
         } catch (SQLException e) {
-            System.out.println("erreur sql :" + e);
+            logger.error("erreur ajout :" + e);
         }
 
         return null;
@@ -66,7 +74,7 @@ public class PatientModel implements DAOPatient {
 
             return n != 0;
         } catch (SQLException e) {
-            System.out.println("erreur sql :" + e);
+            logger.error("erreur remove :" + e);
         }
 
         return false;
@@ -93,7 +101,7 @@ public class PatientModel implements DAOPatient {
             }
 
         } catch (SQLException e) {
-            System.out.println("erreur sql :" + e);
+            logger.error("erreur get :" + e);
         }
 
         return patients;
@@ -111,7 +119,7 @@ public class PatientModel implements DAOPatient {
 
             return n != 0;
         } catch (SQLException e) {
-            System.out.println("erreur sql :" + e);
+            logger.error("erreur update :" + e);
         }
 
         return false;
@@ -142,7 +150,7 @@ public class PatientModel implements DAOPatient {
                 medecins.add(medecin);
             }
         } catch (SQLException e) {
-            System.out.println("erreur sql: " + e);
+            logger.error("erreur get medecins: " + e);
         }
 
         return medecins;
@@ -164,7 +172,7 @@ public class PatientModel implements DAOPatient {
                 tot += total;
             }
         } catch (SQLException e) {
-            System.out.println("erreur sql: " + e);
+            logger.error("erreur calcTot: " + e);
         }
 
         return tot;
@@ -192,7 +200,7 @@ public class PatientModel implements DAOPatient {
                 prescriptions.add(pres);
             }
         } catch (SQLException e) {
-            System.out.println("erreur sql: " + e);
+            logger.error("erreur prescriptionsDate: " + e);
         }
 
         return prescriptions;
