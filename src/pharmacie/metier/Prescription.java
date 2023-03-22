@@ -133,4 +133,14 @@ public class Prescription {
     public void setInfos(List<Infos> infos) {
         this.infos = infos;
     }
+
+    @Override
+    public String toString() {
+        return "Prescription{" +
+                "id=" + id +
+                ", datePrescription=" + datePrescription +
+                ", medecin=" + medecin +
+                ", patient=" + patient +
+                '}';
+    }
 }
