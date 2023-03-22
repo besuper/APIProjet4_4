@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientModel implements DAOPatient {
+public class PatientModel implements DAOPatient, PatientSpecial {
 
     private final Connection dbConnect;
 
@@ -52,7 +52,7 @@ public class PatientModel implements DAOPatient {
                     int idPatient = rs.getInt(1);
 
                     return new Patient(idPatient, patient.getNss(), patient.getNom(), patient.getPrenom(), patient.getDateNaissance());
-                }else {
+                } else {
                     logger.error("record introuvable");
                 }
             }

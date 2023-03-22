@@ -4,6 +4,7 @@ import pharmacie.metier.Medecin;
 import pharmacie.metier.Patient;
 import pharmacie.metier.Prescription;
 import pharmacie.mvp.model.DAOPatient;
+import pharmacie.mvp.model.PatientSpecial;
 import pharmacie.mvp.view.PatientViewInterface;
 
 import java.time.LocalDate;
@@ -26,7 +27,7 @@ public class PatientPresenter {
     }
 
     public List<Medecin> listerMedecin(Patient p) {
-        return model.getMedecins(p);
+        return ((PatientSpecial)model).getMedecins(p);
     }
 
     public void addPatient(Patient patient) {
@@ -66,11 +67,11 @@ public class PatientPresenter {
     }
 
     public double calcTot(Patient p) {
-        return model.calcTot(p);
+        return ((PatientSpecial)model).calcTot(p);
     }
 
     public List<Prescription> prescriptionsDate(Patient patient, LocalDate debut, LocalDate fin) {
-        return model.prescriptionsDate(patient, debut, fin);
+        return ((PatientSpecial)model).prescriptionsDate(patient, debut, fin);
     }
 
 }
