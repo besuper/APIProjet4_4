@@ -145,4 +145,15 @@ public class Medicament {
     public int hashCode() {
         return Objects.hash(code);
     }
+
+    @Override
+    public String toString() {
+        return "Medicament{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", nom='" + nom + '\'' +
+                ", description='" + description + '\'' +
+                ", prixUnitaire=" + prixUnitaire +
+                '}';
+    }
 }
