@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientModel implements DAOPatient, PatientSpecial {
+public class PatientModel implements DAO<Patient>, PatientSpecial {
 
     private final Connection dbConnect;
 
@@ -29,7 +29,7 @@ public class PatientModel implements DAOPatient, PatientSpecial {
     }
 
     @Override
-    public Patient addPatient(Patient patient) {
+    public Patient add(Patient patient) {
         String queryInsert = "INSERT INTO APIPATIENT(nss, nom, prenom, datenaissance) VALUES (?, ?, ?, ?)";
         String querySelectID = "SELECT ID_PATIENT FROM APIPATIENT WHERE NSS = ?";
 
@@ -64,7 +64,63 @@ public class PatientModel implements DAOPatient, PatientSpecial {
     }
 
     @Override
-    public boolean removePatient(Patient patient) {
+    public Patient read(int idPatient) {
+        String query = "SELECT * FROM READPATIENT WHERE id_patient = ?";
+
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, idPatient);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                String nss = rs.getString(2);
+                String nom = rs.getString(3);
+                String prenom = rs.getString(4);
+                LocalDate datenaissance = rs.getDate(5).toLocalDate();
+
+                Patient patient = new Patient(idPatient, nss, nom, prenom, datenaissance);
+
+                List<Prescription> prescriptions = new ArrayList<>();
+
+                int idPrescription = rs.getInt(6);
+
+                do {
+                    if (idPrescription == 0) {
+                        break;
+                    }
+
+                    LocalDate dateprescription = rs.getDate(7).toLocalDate();
+
+                    // Medecin
+                    int idMedecin = rs.getInt(8);
+                    String matricule = rs.getString(9);
+                    String prenom_med = rs.getString(10);
+                    String nom_med = rs.getString(11);
+                    String tel = rs.getString(12);
+
+                    Medecin medecin = new Medecin(idMedecin, matricule, nom_med, prenom_med, tel);
+
+                    Prescription prescription = new Prescription(idPrescription, dateprescription, medecin, patient);
+
+                    prescriptions.add(prescription);
+
+                    // TODO: add Infos + Medicament with an external method
+                } while (rs.next());
+
+                patient.setPrescription(prescriptions);
+
+                return patient;
+            }
+        } catch (SQLException e) {
+            logger.error("erreur ajout :" + e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean remove(Patient patient) {
         String queryDelete = "DELETE FROM APIPATIENT WHERE ID_PATIENT = ?";
 
         try (PreparedStatement preparedStatementDelete = dbConnect.prepareStatement(queryDelete)) {
@@ -81,7 +137,7 @@ public class PatientModel implements DAOPatient, PatientSpecial {
     }
 
     @Override
-    public List<Patient> getPatients() {
+    public List<Patient> getAll() {
         List<Patient> patients = new ArrayList<>();
 
         String querySelect = "SELECT * FROM APIPATIENT";
@@ -108,7 +164,7 @@ public class PatientModel implements DAOPatient, PatientSpecial {
     }
 
     @Override
-    public boolean modifierPatient(Patient patient, String key, Object value) {
+    public Patient update(Patient patient, String key, Object value) {
         String queryUpdateNSS = "UPDATE APIPATIENT SET " + key.toUpperCase() + " = ? WHERE ID_PATIENT = ?";
 
         try (PreparedStatement preparedStatementUpdate = dbConnect.prepareStatement(queryUpdateNSS)) {
@@ -117,16 +173,18 @@ public class PatientModel implements DAOPatient, PatientSpecial {
 
             int n = preparedStatementUpdate.executeUpdate();
 
-            return n != 0;
+            return patient;
         } catch (SQLException e) {
             logger.error("erreur update :" + e);
         }
 
-        return false;
+        return null;
     }
 
     @Override
     public List<Medecin> getMedecins(Patient p) {
+        //FIXME: Use client list (hybrid)
+
         List<Medecin> medecins = new ArrayList<>();
 
         String queryMedecinPatient = "SELECT DISTINCT apimedecin.*  FROM apipatient " +
@@ -157,6 +215,8 @@ public class PatientModel implements DAOPatient, PatientSpecial {
     }
 
     public double calcTot(Patient p) {
+        //FIXME: Use client list (hybrid)
+
         double tot = 0.0;
 
         String queryTotal = "SELECT * FROM APIPRES_TOTAL WHERE ID_PATIENT = ?";
@@ -179,6 +239,8 @@ public class PatientModel implements DAOPatient, PatientSpecial {
     }
 
     public List<Prescription> prescriptionsDate(Patient patient, LocalDate debut, LocalDate fin) {
+        //FIXME: Use client list (hybrid)
+
         List<Prescription> prescriptions = new ArrayList<>();
 
         String queryPrescription = "SELECT * FROM apiprescription WHERE dateprescription BETWEEN ? AND ? AND ID_PATIENT = ?";

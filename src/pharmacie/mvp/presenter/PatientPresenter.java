@@ -3,75 +3,84 @@ package pharmacie.mvp.presenter;
 import pharmacie.metier.Medecin;
 import pharmacie.metier.Patient;
 import pharmacie.metier.Prescription;
-import pharmacie.mvp.model.DAOPatient;
+import pharmacie.mvp.model.DAO;
 import pharmacie.mvp.model.PatientSpecial;
-import pharmacie.mvp.view.PatientViewInterface;
+import pharmacie.mvp.view.ViewInterface;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class PatientPresenter {
 
-    private final DAOPatient model;
-    private final PatientViewInterface view;
+    private final DAO<Patient> model;
+    private final ViewInterface<PatientPresenter> view;
 
-    public PatientPresenter(DAOPatient model, PatientViewInterface view) {
+    public PatientPresenter(DAO<Patient> model, ViewInterface view) {
         this.model = model;
         this.view = view;
         this.view.setPresenter(this);
     }
 
-    public void start() {
-        List<Patient> patients = model.getPatients();
+    public void updateList() {
+        List<Patient> patients = model.getAll();
         view.setListDatas(patients);
     }
 
+    public void start() {
+        updateList();
+        view.start();
+    }
+
     public List<Medecin> listerMedecin(Patient p) {
-        return ((PatientSpecial)model).getMedecins(p);
+        return ((PatientSpecial) model).getMedecins(p);
     }
 
     public void addPatient(Patient patient) {
-        Patient newPatient = model.addPatient(patient);
+        Patient newPatient = model.add(patient);
 
-        if(newPatient == null) {
+        if (newPatient == null) {
             view.affMsg("Erreur de création");
-        }else {
+        } else {
             view.affMsg("Création de : " + newPatient);
         }
 
-        start();
+        updateList();
     }
 
     public void removePatient(Patient patient) {
-        boolean success = model.removePatient(patient);
+        boolean success = model.remove(patient);
 
-        if(success) {
+        if (success) {
             view.affMsg("Patient supprimé");
-        }else {
+        } else {
             view.affMsg("Erreur de suppression");
         }
 
-        start();
+        updateList();
     }
 
     public void modifierPatientInfo(Patient patient, String key, Object value) {
-        boolean updated = model.modifierPatient(patient, key, value);
+        Patient updated = model.update(patient, key, value);
 
-        if(updated) {
+        if (updated != null) {
             view.affMsg("Patient modifié !");
-        }else {
+        } else {
             view.affMsg("Erreur de modification");
         }
 
-        start();
+        updateList();
+    }
+
+    public Patient read(int idPatient) {
+        return model.read(idPatient);
     }
 
     public double calcTot(Patient p) {
-        return ((PatientSpecial)model).calcTot(p);
+        return ((PatientSpecial) model).calcTot(p);
     }
 
     public List<Prescription> prescriptionsDate(Patient patient, LocalDate debut, LocalDate fin) {
-        return ((PatientSpecial)model).prescriptionsDate(patient, debut, fin);
+        return ((PatientSpecial) model).prescriptionsDate(patient, debut, fin);
     }
 
 }

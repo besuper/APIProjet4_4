@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
-public class PatientViewConsole implements PatientViewInterface {
+public class PatientViewConsole implements ViewInterface<PatientPresenter> {
 
     private PatientPresenter presenter;
     private List<Patient> patients;
@@ -21,6 +21,7 @@ public class PatientViewConsole implements PatientViewInterface {
     }
 
     public void menu() {
+        menu:
         do {
             System.out.println("1.Ajout\n2.Recherche\n3.Modification\n4.Suppression\n5.Tous\n6.Fin");
             System.out.println("choix : ");
@@ -34,7 +35,9 @@ public class PatientViewConsole implements PatientViewInterface {
                 case 3 -> modification();
                 case 4 -> suppression();
                 case 5 -> tous();
-                case 6 -> System.exit(0);
+                case 6 -> {
+                    break menu;
+                }
                 default -> System.out.println("choix invalide recommencez ");
             }
         } while (true);
@@ -68,12 +71,14 @@ public class PatientViewConsole implements PatientViewInterface {
         System.out.println("ID du patient recherché: ");
         int idPatient = scanner.nextInt();
 
-        for (Patient p : this.patients) {
-            if (p.getId() == idPatient) {
-                System.out.println(p);
+        Patient p = presenter.read(idPatient);
 
-                opSpeciales(p);
-            }
+        if (p == null) {
+            System.out.println("Patient introuvable !");
+        } else {
+            System.out.println(p);
+
+            opSpeciales(p);
         }
     }
 
@@ -197,14 +202,17 @@ public class PatientViewConsole implements PatientViewInterface {
     }
 
     @Override
-    public void setListDatas(List<Patient> patients) {
+    public void setListDatas(List patients) {
         this.patients = patients;
-
-        menu();
     }
 
     @Override
     public void affMsg(String msg) {
         System.out.println(msg);
+    }
+
+    @Override
+    public void start() {
+        menu();
     }
 }

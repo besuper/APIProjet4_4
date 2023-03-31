@@ -5,12 +5,14 @@ import pharmacie.mvp.presenter.PatientPresenter;
 
 import java.util.List;
 
-public interface PatientViewInterface {
+public interface ViewInterface<E> {
 
-    void setPresenter(PatientPresenter presenter);
+    void setPresenter(E presenter);
 
-    void setListDatas(List<Patient> patients);
+    void setListDatas(List objs);
 
     void affMsg(String msg);
+
+    void start();
 
 }
