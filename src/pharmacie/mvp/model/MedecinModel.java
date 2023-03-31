@@ -110,7 +110,7 @@ public class MedecinModel implements DAO<Medecin> {
             }
 
         } catch (SQLException e) {
-            logger.error("erreur get :" + e);
+            logger.error("erreur getAll :" + e);
         }
 
         return medecins;

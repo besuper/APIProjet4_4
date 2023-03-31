@@ -3,9 +3,7 @@ package pharmacie.mvp.model;
 import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pharmacie.metier.Medecin;
-import pharmacie.metier.Patient;
-import pharmacie.metier.Prescription;
+import pharmacie.metier.*;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -103,9 +101,9 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
 
                     Prescription prescription = new Prescription(idPrescription, dateprescription, medecin, patient);
 
-                    prescriptions.add(prescription);
+                    prescription.setInfos(getInfosFromPrescription(prescription));
 
-                    // TODO: add Infos + Medicament with an external method
+                    prescriptions.add(prescription);
                 } while (rs.next());
 
                 patient.setPrescription(prescriptions);
@@ -113,7 +111,43 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
                 return patient;
             }
         } catch (SQLException e) {
-            logger.error("erreur ajout :" + e);
+            logger.error("erreur read :" + e);
+        }
+
+        return null;
+    }
+
+    public List<Infos> getInfosFromPrescription(Prescription prescription) {
+        String query = "SELECT * FROM INFOS_PRES WHERE id_prescription = ?";
+
+        List<Infos> infos = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, prescription.getId());
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                do {
+                    int medId = rs.getInt("id_medicament");
+                    int quantite = rs.getInt("quantite");
+                    String code = rs.getString("code");
+                    String nom = rs.getString("nom");
+                    String description = rs.getString("description");
+                    double prixUnitaire = rs.getDouble("prixunitaire");
+
+                    Medicament medicament = new Medicament(medId, code, nom, description, prixUnitaire);
+
+                    Infos info = new Infos(quantite, medicament, prescription);
+
+                    infos.add(info);
+                } while (rs.next());
+
+                return infos;
+            }
+        } catch (SQLException e) {
+            logger.error("erreur getInfosFromPrescription :" + e);
         }
 
         return null;
@@ -157,7 +191,7 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
             }
 
         } catch (SQLException e) {
-            logger.error("erreur get :" + e);
+            logger.error("erreur getAll :" + e);
         }
 
         return patients;
@@ -183,9 +217,7 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
 
     @Override
     public List<Medecin> getMedecins(Patient p) {
-        //FIXME: Use client list (hybrid)
-
-        List<Medecin> medecins = new ArrayList<>();
+        /*List<Medecin> medecins = new ArrayList<>();
 
         String queryMedecinPatient = "SELECT DISTINCT apimedecin.*  FROM apipatient " +
                 "JOIN apiprescription ON apipatient.id_patient = apiprescription.id_patient " +
@@ -211,15 +243,25 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
             logger.error("erreur get medecins: " + e);
         }
 
+        return medecins;*/
+
+        //FIXME: Use client list (hybrid)
+
+        List<Medecin> medecins = new ArrayList<>();
+
+        for (Prescription pres : p.getPrescription()) {
+            if (medecins.contains(pres.getMedecin())) continue;
+
+            medecins.add(pres.getMedecin());
+        }
+
         return medecins;
     }
 
     public double calcTot(Patient p) {
-        //FIXME: Use client list (hybrid)
-
         double tot = 0.0;
 
-        String queryTotal = "SELECT * FROM APIPRES_TOTAL WHERE ID_PATIENT = ?";
+        /*String queryTotal = "SELECT * FROM APIPRES_TOTAL WHERE ID_PATIENT = ?";
 
         try (PreparedStatement preparedStatementTotal = dbConnect.prepareStatement(queryTotal)) {
             preparedStatementTotal.setInt(1, p.getId());
@@ -233,6 +275,14 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
             }
         } catch (SQLException e) {
             logger.error("erreur calcTot: " + e);
+        }*/
+
+        //FIXME: Use client list (hybrid)
+
+        for (Prescription pres : p.getPrescription()) {
+            for (Infos infos : pres.getInfos()) {
+                tot += infos.getQuantite() * infos.getMedicament().getPrixUnitaire();
+            }
         }
 
         return tot;
