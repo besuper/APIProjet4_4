@@ -1,8 +1,5 @@
 package pharmacie.mvp.view;
 
-import pharmacie.metier.Patient;
-import pharmacie.mvp.presenter.PatientPresenter;
-
 import java.util.List;
 
 public interface ViewInterface<E> {

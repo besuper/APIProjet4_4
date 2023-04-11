@@ -15,7 +15,7 @@ public class Medecin {
     /**
      * Identifiant unique du médecin
      */
-    private int id;
+    private final int id;
 
     /**
      * Matricule

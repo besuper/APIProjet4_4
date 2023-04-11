@@ -16,7 +16,7 @@ public class Prescription {
     /**
      * Identifiant unique d'une prescription
      */
-    private int id;
+    private final int id;
 
     /**
      * Date de prescription

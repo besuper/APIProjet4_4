@@ -3,7 +3,6 @@ package pharmacie.mvp.model;
 import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pharmacie.metier.Medecin;
 import pharmacie.metier.Medicament;
 
 import java.sql.*;

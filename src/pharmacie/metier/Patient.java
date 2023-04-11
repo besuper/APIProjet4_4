@@ -16,7 +16,7 @@ public class Patient {
     /**
      * Identifiant unique du patient
      */
-    private int id;
+    private final int id;
 
     /**
      * NSS du patient

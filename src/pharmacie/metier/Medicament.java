@@ -12,7 +12,7 @@ public class Medicament {
     /**
      * Identifiant unique du médicament
      */
-    private int id;
+    private final int id;
 
     /**
      * Code du médicament

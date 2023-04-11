@@ -1,6 +1,5 @@
 package pharmacie.mvp.presenter;
 
-import pharmacie.metier.Medecin;
 import pharmacie.metier.Medicament;
 import pharmacie.mvp.model.DAO;
 import pharmacie.mvp.view.ViewInterface;

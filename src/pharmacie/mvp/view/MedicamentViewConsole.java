@@ -1,11 +1,8 @@
 package pharmacie.mvp.view;
 
-import pharmacie.metier.Medecin;
 import pharmacie.metier.Medicament;
-import pharmacie.mvp.presenter.MedecinPresenter;
 import pharmacie.mvp.presenter.MedicamentPresenter;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 

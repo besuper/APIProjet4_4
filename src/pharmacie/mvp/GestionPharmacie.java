@@ -3,17 +3,13 @@ package pharmacie.mvp;
 import pharmacie.metier.Medecin;
 import pharmacie.metier.Medicament;
 import pharmacie.metier.Patient;
-import pharmacie.mvp.model.DAO;
-import pharmacie.mvp.model.MedecinModel;
-import pharmacie.mvp.model.MedicamentModel;
-import pharmacie.mvp.model.PatientModel;
+import pharmacie.metier.Prescription;
+import pharmacie.mvp.model.*;
 import pharmacie.mvp.presenter.MedecinPresenter;
 import pharmacie.mvp.presenter.MedicamentPresenter;
 import pharmacie.mvp.presenter.PatientPresenter;
-import pharmacie.mvp.view.MedecinViewConsole;
-import pharmacie.mvp.view.MedicamentViewConsole;
-import pharmacie.mvp.view.PatientViewConsole;
-import pharmacie.mvp.view.ViewInterface;
+import pharmacie.mvp.presenter.PrescriptionPresenter;
+import pharmacie.mvp.view.*;
 import pharmacie.utilitaires.Utilitaire;
 
 import java.util.Arrays;
@@ -36,6 +32,11 @@ public class GestionPharmacie {
     ViewInterface<MedicamentPresenter> viewMedicament;
     MedicamentPresenter mmp;
 
+    // Prescriptions
+    DAO<Prescription> daoPrescription;
+    ViewInterface<PrescriptionPresenter> viewPrescription;
+    PrescriptionPresenter ppp;
+
     public void gestion() {
         daoPatient = new PatientModel();
         viewPatient = new PatientViewConsole();
@@ -49,15 +50,23 @@ public class GestionPharmacie {
         viewMedicament = new MedicamentViewConsole();
         mmp = new MedicamentPresenter(daoMedicament, viewMedicament);
 
-        List<String> loptions = Arrays.asList("patients", "medecins", "medicaments", "fin");
+        daoPrescription = new PrescriptionModel();
+        viewPrescription = new PrescriptionViewConsole();
+        ppp = new PrescriptionPresenter(daoPrescription, viewPrescription);
+        ppp.setMedecinPresenter(mp);
+        ppp.setPatientPresenter(pp);
+        ppp.setMedicamentPresenter(mmp);
+
+        List<String> loptions = Arrays.asList("Prescriptions", "Patients", "Medecins", "Médicaments", "fin");
 
         do {
             int ch = Utilitaire.choixListe(loptions);
             switch (ch) {
-                case 1 -> pp.start();
-                case 2 -> mp.start();
-                case 3 -> mmp.start();
-                case 4 -> System.exit(0);
+                case 1 -> ppp.start();
+                case 2 -> pp.start();
+                case 3 -> mp.start();
+                case 4 -> mmp.start();
+                case 5 -> System.exit(0);
             }
         } while (true);
     }
