@@ -4,8 +4,11 @@ import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pharmacie.metier.Medecin;
+import pharmacie.metier.Patient;
+import pharmacie.metier.Prescription;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +67,51 @@ public class MedecinModel implements DAO<Medecin> {
 
     @Override
     public Medecin read(int id) {
-        // TODO: implement
+        String query = "SELECT * FROM APIREADMEDECIN WHERE id_medecin = ?";
+
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                String matricule = rs.getString("matricule");
+                String tel = rs.getString("tel");
+                String nom_medecin = rs.getString("nom_medecin");
+                String prenom_medecin = rs.getString("prenom_medecin");
+                Medecin medecin = new Medecin(id, matricule, nom_medecin, prenom_medecin, tel);
+
+                int idPatient = rs.getInt("id_patient");
+                String nss = rs.getString("nss");
+                String nom_patient = rs.getString("nom_patient");
+                String prenom_patient = rs.getString("prenom_patient");
+                LocalDate dateNaissance = rs.getDate("datenaissance").toLocalDate();
+                Patient patient = new Patient(idPatient, nss, nom_patient, prenom_patient, dateNaissance);
+
+                List<Prescription> prescriptions = new ArrayList<>();
+
+                int idPrescription = rs.getInt("id_prescription");
+
+                do {
+                    if (idPrescription == 0) {
+                        break;
+                    }
+
+                    LocalDate datePrescription = rs.getDate("dateprescription").toLocalDate();
+
+                    Prescription prescription = new Prescription(idPrescription, datePrescription, medecin, patient);
+
+                    prescriptions.add(prescription);
+                } while (rs.next());
+
+                medecin.setPrescription(prescriptions);
+
+                return medecin;
+            }
+        } catch (SQLException e) {
+            logger.error("erreur read :" + e);
+        }
 
         return null;
     }

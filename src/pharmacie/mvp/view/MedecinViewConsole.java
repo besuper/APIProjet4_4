@@ -1,6 +1,7 @@
 package pharmacie.mvp.view;
 
 import pharmacie.metier.Medecin;
+import pharmacie.metier.Prescription;
 import pharmacie.mvp.presenter.MedecinPresenter;
 import pharmacie.utilitaires.Utilitaire;
 
@@ -68,9 +69,15 @@ public class MedecinViewConsole implements MedecinViewInterface {
         System.out.println("ID du medecin recherché: ");
         int idMedecin = scanner.nextInt();
 
-        for (Medecin p : this.medecins) {
-            if (p.getId() == idMedecin) {
-                System.out.println(p);
+        Medecin medecin = presenter.read(idMedecin);
+
+        if(medecin == null){
+            System.out.println("Medecin introuvable !");
+        }else {
+            System.out.println(medecin);
+
+            for(Prescription pres : medecin.getPrescription()) {
+                System.out.println(pres);
             }
         }
     }

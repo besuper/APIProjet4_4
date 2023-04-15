@@ -67,4 +67,8 @@ public class MedecinPresenter {
         return view.selectionner(model.getAll());
     }
 
+    public Medecin read(int id){
+        return model.read(id);
+    }
+
 }
