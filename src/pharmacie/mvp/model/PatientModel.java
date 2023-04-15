@@ -241,30 +241,12 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
     }
 
     public List<Prescription> prescriptionsDate(Patient patient, LocalDate debut, LocalDate fin) {
-        //FIXME: Use client list (hybrid)
-
         List<Prescription> prescriptions = new ArrayList<>();
 
-        String queryPrescription = "SELECT * FROM apiprescription WHERE dateprescription BETWEEN ? AND ? AND ID_PATIENT = ?";
-
-        try (PreparedStatement preparedStatementPrescription = dbConnect.prepareStatement(queryPrescription)) {
-
-            preparedStatementPrescription.setDate(1, Date.valueOf(debut));
-            preparedStatementPrescription.setDate(2, Date.valueOf(fin));
-            preparedStatementPrescription.setInt(3, patient.getId());
-
-            ResultSet rs = preparedStatementPrescription.executeQuery();
-
-            while (rs.next()) {
-                int idPrescription = rs.getInt(1);
-                LocalDate date = rs.getDate(2).toLocalDate();
-                //int idMedecin = rs.getInt(4);
-
-                Prescription pres = new Prescription(idPrescription, date, null, patient);
+        for(Prescription pres : patient.getPrescription()) {
+            if(pres.getDatePrescription().isAfter(debut) && pres.getDatePrescription().isBefore(fin)) {
                 prescriptions.add(pres);
             }
-        } catch (SQLException e) {
-            logger.error("erreur prescriptionsDate: " + e);
         }
 
         return prescriptions;
