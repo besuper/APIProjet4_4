@@ -3,9 +3,7 @@ package pharmacie.mvp.model;
 import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pharmacie.metier.Medecin;
-import pharmacie.metier.Patient;
-import pharmacie.metier.Prescription;
+import pharmacie.metier.*;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -66,7 +64,44 @@ public class PrescriptionModel implements DAO<Prescription> {
 
     @Override
     public Prescription read(int id) {
-        // TODO: implement
+        String querySelect = "SELECT * FROM APIPRES_DETAIL WHERE id_prescription = ?";
+
+        try (PreparedStatement statementSelect = dbConnect.prepareStatement(querySelect)) {
+            statementSelect.setInt(1, id);
+
+            ResultSet rs = statementSelect.executeQuery();
+
+            if (rs.next()) {
+                int idPrescription = rs.getInt("id_prescription");
+                LocalDate datePrescription = rs.getDate("dateprescription").toLocalDate();
+
+                int idPatient = rs.getInt("id_patient");
+                String nss = rs.getString("nss");
+                String nomPatient = rs.getString("nom_pat");
+                String prenomPatient = rs.getString("prenom_pat");
+                LocalDate dateNaissance = rs.getDate("datenaissance").toLocalDate();
+
+                Patient patient = new Patient(idPatient, nss, nomPatient, prenomPatient, dateNaissance);
+
+                int idMedecin = rs.getInt("id_medecin");
+                String matricule = rs.getString("matricule");
+                String nomMedecin = rs.getString("nom_med");
+                String prenomMedecin = rs.getString("prenom_med");
+                String tel = rs.getString("tel");
+
+                Medecin medecin = new Medecin(idMedecin, matricule, nomMedecin, prenomMedecin, tel);
+
+                Prescription prescription = new Prescription(idPrescription, datePrescription, medecin, patient);
+
+                prescription.setInfos(getInfosFromPrescription(prescription));
+
+                return prescription;
+            }
+
+        } catch (SQLException e) {
+            logger.error("erreur getAll :" + e);
+        }
+
         return null;
     }
 
@@ -143,6 +178,42 @@ public class PrescriptionModel implements DAO<Prescription> {
         }
 
         return null;
+    }
+
+    public List<Infos> getInfosFromPrescription(Prescription prescription) {
+        String query = "SELECT * FROM INFOS_PRES WHERE id_prescription = ?";
+
+        List<Infos> infos = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, prescription.getId());
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                do {
+                    int medId = rs.getInt("id_medicament");
+                    int quantite = rs.getInt("quantite");
+                    String code = rs.getString("code");
+                    String nom = rs.getString("nom");
+                    String description = rs.getString("description");
+                    double prixUnitaire = rs.getDouble("prixunitaire");
+
+                    Medicament medicament = new Medicament(medId, code, nom, description, prixUnitaire);
+
+                    Infos info = new Infos(quantite, medicament, prescription);
+
+                    infos.add(info);
+                } while (rs.next());
+
+                return infos;
+            }
+        } catch (SQLException e) {
+            logger.error("erreur getInfosFromPrescription :" + e);
+        }
+
+        return infos;
     }
 
 }

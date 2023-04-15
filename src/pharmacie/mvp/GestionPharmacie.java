@@ -19,22 +19,22 @@ public class GestionPharmacie {
 
     // Patients
     DAO<Patient> daoPatient;
-    ViewInterface<PatientPresenter> viewPatient;
+    PatientViewInterface viewPatient;
     PatientPresenter pp;
 
     // Medecins
     DAO<Medecin> daoMedecin;
-    ViewInterface<MedecinPresenter> viewMedecin;
+    MedecinViewInterface viewMedecin;
     MedecinPresenter mp;
 
     // Medicament
     DAO<Medicament> daoMedicament;
-    ViewInterface<MedicamentPresenter> viewMedicament;
+    MedicamentViewInterface viewMedicament;
     MedicamentPresenter mmp;
 
     // Prescriptions
     DAO<Prescription> daoPrescription;
-    ViewInterface<PrescriptionPresenter> viewPrescription;
+    PrescriptionViewInterface viewPrescription;
     PrescriptionPresenter ppp;
 
     public void gestion() {

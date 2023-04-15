@@ -2,12 +2,13 @@ package pharmacie.mvp.view;
 
 import pharmacie.metier.Medecin;
 import pharmacie.mvp.presenter.MedecinPresenter;
+import pharmacie.utilitaires.Utilitaire;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
-public class MedecinViewConsole implements ViewInterface<MedecinPresenter> {
+public class MedecinViewConsole implements MedecinViewInterface {
 
     private MedecinPresenter presenter;
     private List<Medecin> medecins;
@@ -145,5 +146,12 @@ public class MedecinViewConsole implements ViewInterface<MedecinPresenter> {
     @Override
     public void start() {
         menu();
+    }
+
+    @Override
+    public Medecin selectionner(List<Medecin> list) {
+        int index = Utilitaire.choixListe(list);
+
+        return list.get(index - 1);
     }
 }

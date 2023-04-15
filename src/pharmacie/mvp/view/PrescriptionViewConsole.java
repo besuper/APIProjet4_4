@@ -1,14 +1,16 @@
 package pharmacie.mvp.view;
 
+import pharmacie.metier.Infos;
 import pharmacie.metier.Prescription;
 import pharmacie.mvp.presenter.PrescriptionPresenter;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class PrescriptionViewConsole implements ViewInterface<PrescriptionPresenter> {
+public class PrescriptionViewConsole implements PrescriptionViewInterface {
 
     private PrescriptionPresenter presenter;
+
     private List<Prescription> prescriptions;
     private final Scanner scanner = new Scanner(System.in);
 
@@ -46,20 +48,7 @@ public class PrescriptionViewConsole implements ViewInterface<PrescriptionPresen
     }
 
     public void ajout() {
-        /*System.out.println("NSS: ");
-        String nss = scanner.next();
-
-        System.out.println("Nom: ");
-        String nom = scanner.next();
-
-        System.out.println("Prénom: ");
-        String prenom = scanner.next();
-
-        System.out.println("Date de naissance (jj/mm/aaaa): ");
-        String date = scanner.next();
-        LocalDate dateNaissance = LocalDate.parse(date, formatter);
-
-        presenter.addPatient(new Patient(0, nss, nom, prenom, dateNaissance));*/
+        presenter.addPrescription();
     }
 
     public void recherche() {
@@ -73,7 +62,9 @@ public class PrescriptionViewConsole implements ViewInterface<PrescriptionPresen
         } else {
             System.out.println(p);
 
-            //opSpeciales(p);
+            for(Infos info : p.getInfos()) {
+                System.out.println(info);
+            }
         }
     }
 
@@ -131,65 +122,6 @@ public class PrescriptionViewConsole implements ViewInterface<PrescriptionPresen
 
         presenter.removePrescription(modifierPrescription);
     }
-
-    /*private void opSpeciales(Patient patient) {
-        do {
-            System.out.println("1.liste des médecins\n2.montant prescriptions\n3.prescriptions\n4.menu principal");
-            System.out.println("choix : ");
-
-            int ch = scanner.nextInt();
-            scanner.skip("\n");
-
-            switch (ch) {
-                case 1 -> listeMedecin(patient);
-                case 2 -> prescriptionTotal(patient);
-                case 3 -> prescriptionDate(patient);
-                case 4 -> {
-                    return;
-                }
-                default -> System.out.println("choix invalide recommencez ");
-            }
-        } while (true);
-
-    }
-
-    public void listeMedecin(Patient p) {
-        List<Medecin> medecins = presenter.listerMedecin(p);
-
-        if (medecins.size() == 0) {
-            System.out.println("Aucun médecin trouvé");
-        } else {
-            for (Medecin medecin : medecins) {
-                System.out.println(medecin);
-            }
-        }
-    }
-
-    public void prescriptionTotal(Patient p) {
-        double total = presenter.calcTot(p);
-
-        System.out.println("Total de toutes les prescriptions: " + total);
-    }
-
-    public void prescriptionDate(Patient p) {
-        System.out.println("Date de début (jj/mm/aaaa): ");
-        String dateD = scanner.next();
-        LocalDate dateDebut = LocalDate.parse(dateD, formatter);
-
-        System.out.println("Date de fin (jj/mm/aaaa): ");
-        String dateF = scanner.next();
-        LocalDate dateFin = LocalDate.parse(dateF, formatter);
-
-        List<Prescription> prescriptions = presenter.prescriptionsDate(p, dateDebut, dateFin);
-
-        if (prescriptions.size() == 0) {
-            System.out.println("Aucune prescriptions");
-        } else {
-            for (Prescription pres : prescriptions) {
-                System.out.println(pres);
-            }
-        }
-    }*/
 
     @Override
     public void setPresenter(PrescriptionPresenter presenter) {

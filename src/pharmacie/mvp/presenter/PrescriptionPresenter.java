@@ -1,21 +1,24 @@
 package pharmacie.mvp.presenter;
 
+import pharmacie.metier.Medecin;
+import pharmacie.metier.Patient;
 import pharmacie.metier.Prescription;
 import pharmacie.mvp.model.DAO;
-import pharmacie.mvp.view.ViewInterface;
+import pharmacie.mvp.view.PrescriptionViewInterface;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class PrescriptionPresenter {
 
     private final DAO<Prescription> model;
-    private final ViewInterface<PrescriptionPresenter> view;
+    private final PrescriptionViewInterface view;
 
     private MedecinPresenter medecinPresenter;
     private PatientPresenter patientPresenter;
     private MedicamentPresenter medicamentPresenter;
 
-    public PrescriptionPresenter(DAO model, ViewInterface view) {
+    public PrescriptionPresenter(DAO model, PrescriptionViewInterface view) {
         this.model = model;
         this.view = view;
         this.view.setPresenter(this);
@@ -43,8 +46,13 @@ public class PrescriptionPresenter {
         view.setListDatas(prescriptions);
     }
 
-    public void addPrescription(Prescription prescription) {
-        Prescription newPrescription = model.add(prescription);
+    public void addPrescription() {
+        Medecin medecin = medecinPresenter.selectionner();
+        Patient patient = patientPresenter.selectionner();
+
+        Prescription newPrescription = new Prescription(0, LocalDate.now(), medecin, patient);
+
+        newPrescription = model.add(newPrescription);
 
         if (newPrescription == null) {
             view.affMsg("Erreur de création");

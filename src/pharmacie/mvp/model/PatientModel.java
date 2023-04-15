@@ -150,7 +150,7 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
             logger.error("erreur getInfosFromPrescription :" + e);
         }
 
-        return null;
+        return infos;
     }
 
     @Override
@@ -217,36 +217,6 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
 
     @Override
     public List<Medecin> getMedecins(Patient p) {
-        /*List<Medecin> medecins = new ArrayList<>();
-
-        String queryMedecinPatient = "SELECT DISTINCT apimedecin.*  FROM apipatient " +
-                "JOIN apiprescription ON apipatient.id_patient = apiprescription.id_patient " +
-                "JOIN apimedecin ON apiprescription.id_medecin = apimedecin.id_medecin " +
-                "WHERE apipatient.nss = ?";
-
-        try (PreparedStatement preparedStatementMedPat = dbConnect.prepareStatement(queryMedecinPatient)) {
-            preparedStatementMedPat.setString(1, p.getNss());
-
-            ResultSet rs = preparedStatementMedPat.executeQuery();
-
-            while (rs.next()) {
-                int idMedecin = rs.getInt(1);
-                String matricule = rs.getString(2);
-                String prenom = rs.getString(3);
-                String tel = rs.getString(4);
-                String nom = rs.getString(5);
-
-                Medecin medecin = new Medecin(idMedecin, matricule, prenom, tel, nom);
-                medecins.add(medecin);
-            }
-        } catch (SQLException e) {
-            logger.error("erreur get medecins: " + e);
-        }
-
-        return medecins;*/
-
-        //FIXME: Use client list (hybrid)
-
         List<Medecin> medecins = new ArrayList<>();
 
         for (Prescription pres : p.getPrescription()) {
@@ -260,24 +230,6 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
 
     public double calcTot(Patient p) {
         double tot = 0.0;
-
-        /*String queryTotal = "SELECT * FROM APIPRES_TOTAL WHERE ID_PATIENT = ?";
-
-        try (PreparedStatement preparedStatementTotal = dbConnect.prepareStatement(queryTotal)) {
-            preparedStatementTotal.setInt(1, p.getId());
-
-            ResultSet rs = preparedStatementTotal.executeQuery();
-
-            while (rs.next()) {
-                double total = rs.getDouble(5);
-
-                tot += total;
-            }
-        } catch (SQLException e) {
-            logger.error("erreur calcTot: " + e);
-        }*/
-
-        //FIXME: Use client list (hybrid)
 
         for (Prescription pres : p.getPrescription()) {
             for (Infos infos : pres.getInfos()) {

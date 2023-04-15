@@ -2,16 +2,16 @@ package pharmacie.mvp.presenter;
 
 import pharmacie.metier.Medicament;
 import pharmacie.mvp.model.DAO;
-import pharmacie.mvp.view.ViewInterface;
+import pharmacie.mvp.view.MedicamentViewInterface;
 
 import java.util.List;
 
 public class MedicamentPresenter {
 
     private final DAO<Medicament> model;
-    private final ViewInterface<MedicamentPresenter> view;
+    private final MedicamentViewInterface view;
 
-    public MedicamentPresenter(DAO model, ViewInterface view) {
+    public MedicamentPresenter(DAO model, MedicamentViewInterface view) {
         this.model = model;
         this.view = view;
         this.view.setPresenter(this);
@@ -61,6 +61,10 @@ public class MedicamentPresenter {
         }
 
         updateList();
+    }
+
+    public Medicament selectionner() {
+        return view.selectionner(model.getAll());
     }
 
 }

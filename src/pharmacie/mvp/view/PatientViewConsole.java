@@ -4,13 +4,14 @@ import pharmacie.metier.Medecin;
 import pharmacie.metier.Patient;
 import pharmacie.metier.Prescription;
 import pharmacie.mvp.presenter.PatientPresenter;
+import pharmacie.utilitaires.Utilitaire;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
-public class PatientViewConsole implements ViewInterface<PatientPresenter> {
+public class PatientViewConsole implements PatientViewInterface {
 
     private PatientPresenter presenter;
     private List<Patient> patients;
@@ -214,5 +215,12 @@ public class PatientViewConsole implements ViewInterface<PatientPresenter> {
     @Override
     public void start() {
         menu();
+    }
+
+    @Override
+    public Patient selectionner(List<Patient> list) {
+        int index = Utilitaire.choixListe(list);
+
+        return list.get(index - 1);
     }
 }

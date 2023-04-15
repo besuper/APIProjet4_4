@@ -5,7 +5,7 @@ import pharmacie.metier.Patient;
 import pharmacie.metier.Prescription;
 import pharmacie.mvp.model.DAO;
 import pharmacie.mvp.model.PatientSpecial;
-import pharmacie.mvp.view.ViewInterface;
+import pharmacie.mvp.view.PatientViewInterface;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.List;
 public class PatientPresenter {
 
     private final DAO<Patient> model;
-    private final ViewInterface<PatientPresenter> view;
+    private final PatientViewInterface view;
 
-    public PatientPresenter(DAO<Patient> model, ViewInterface view) {
+    public PatientPresenter(DAO<Patient> model, PatientViewInterface view) {
         this.model = model;
         this.view = view;
         this.view.setPresenter(this);
@@ -81,6 +81,10 @@ public class PatientPresenter {
 
     public List<Prescription> prescriptionsDate(Patient patient, LocalDate debut, LocalDate fin) {
         return ((PatientSpecial) model).prescriptionsDate(patient, debut, fin);
+    }
+
+    public Patient selectionner() {
+        return view.selectionner(model.getAll());
     }
 
 }

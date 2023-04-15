@@ -2,11 +2,12 @@ package pharmacie.mvp.view;
 
 import pharmacie.metier.Medicament;
 import pharmacie.mvp.presenter.MedicamentPresenter;
+import pharmacie.utilitaires.Utilitaire;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class MedicamentViewConsole implements ViewInterface<MedicamentPresenter> {
+public class MedicamentViewConsole implements MedicamentViewInterface {
 
     private MedicamentPresenter presenter;
     private List<Medicament> medicaments;
@@ -144,5 +145,12 @@ public class MedicamentViewConsole implements ViewInterface<MedicamentPresenter>
     @Override
     public void start() {
         menu();
+    }
+
+    @Override
+    public Medicament selectionner(List<Medicament> list) {
+        int index = Utilitaire.choixListe(list);
+
+        return list.get(index - 1);
     }
 }

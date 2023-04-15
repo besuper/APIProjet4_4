@@ -94,7 +94,6 @@ public class Infos {
         return "Infos{" +
                 "quantite=" + quantite +
                 ", medicament=" + medicament +
-                ", prescription=" + prescription +
                 '}';
     }
 }
