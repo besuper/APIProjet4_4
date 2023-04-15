@@ -12,6 +12,11 @@ public class Utilitaire {
         return choixElt(l);
     }
 
+    public static int choixListeM(List l) {
+        affListe(l);
+        return choixEltM(l);
+    }
+
     public static void affListe(List l) {
         int i = 1;
         for (Object o : l) {
@@ -26,6 +31,16 @@ public class Utilitaire {
             choix = sc.nextInt();
             sc.skip("\n");
         } while (choix < 1 || choix > l.size());
+        return choix;
+    }
+
+    public static int choixEltM(List l) {
+        int choix;
+        do {
+            System.out.println("choix :");
+            choix = sc.nextInt();
+            sc.skip("\n");
+        } while (choix < -1 || choix > l.size());
         return choix;
     }
 

@@ -1,9 +1,12 @@
 package pharmacie.mvp.view;
 
+import pharmacie.metier.Infos;
 import pharmacie.metier.Medicament;
+import pharmacie.metier.Prescription;
 import pharmacie.mvp.presenter.MedicamentPresenter;
 import pharmacie.utilitaires.Utilitaire;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -148,9 +151,24 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
     }
 
     @Override
-    public Medicament selectionner(List<Medicament> list) {
-        int index = Utilitaire.choixListe(list);
+    public List<Infos> selectionner(List<Medicament> list, Prescription prescription) {
+        System.out.println("Selectionnez les médicaments (-1 pour arrêt)");
 
-        return list.get(index - 1);
+        int index;
+        int quantity = 1;
+        List<Infos> infos = new ArrayList<>();
+
+        while(true) {
+            index = Utilitaire.choixListeM(list);
+
+            if(index == -1) break;
+
+            System.out.println("Quantité : ");
+            quantity = scanner.nextInt();
+
+            infos.add(new Infos(quantity, list.get(index - 1), prescription));
+        }
+
+        return infos;
     }
 }

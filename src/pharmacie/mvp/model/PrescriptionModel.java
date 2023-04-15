@@ -50,7 +50,13 @@ public class PrescriptionModel implements DAO<Prescription> {
                 if (rs.next()) {
                     int idPrescription = rs.getInt(1);
 
-                    return new Prescription(idPrescription, prescription.getDatePrescription(), prescription.getMedecin(), prescription.getPatient());
+                    prescription.setId(idPrescription);
+
+                    for(Infos infos : prescription.getInfos()) {
+                        addPrescriptionInfo(infos);
+                    }
+
+                    return prescription;
                 } else {
                     logger.error("record introuvable");
                 }
@@ -60,6 +66,21 @@ public class PrescriptionModel implements DAO<Prescription> {
         }
 
         return null;
+    }
+
+    public void addPrescriptionInfo(Infos infos) {
+        String queryInsert = "INSERT INTO APIINFOS(id_prescription, id_medicament, quantite) VALUES (?, ?, ?)";
+
+        try (PreparedStatement preparedStatementInsert = dbConnect.prepareStatement(queryInsert);
+        ) {
+            preparedStatementInsert.setInt(1, infos.getPrescription().getId());
+            preparedStatementInsert.setInt(2, infos.getMedicament().getId());
+            preparedStatementInsert.setInt(3, infos.getQuantite());
+
+            int n = preparedStatementInsert.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("erreur ajout :" + e);
+        }
     }
 
     @Override

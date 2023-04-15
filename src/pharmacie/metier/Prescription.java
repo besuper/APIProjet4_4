@@ -16,7 +16,7 @@ public class Prescription {
     /**
      * Identifiant unique d'une prescription
      */
-    private final int id;
+    private int id;
 
     /**
      * Date de prescription
@@ -60,6 +60,10 @@ public class Prescription {
      */
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**

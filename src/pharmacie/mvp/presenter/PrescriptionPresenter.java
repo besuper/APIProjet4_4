@@ -1,12 +1,11 @@
 package pharmacie.mvp.presenter;
 
-import pharmacie.metier.Medecin;
-import pharmacie.metier.Patient;
-import pharmacie.metier.Prescription;
+import pharmacie.metier.*;
 import pharmacie.mvp.model.DAO;
 import pharmacie.mvp.view.PrescriptionViewInterface;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrescriptionPresenter {
@@ -51,6 +50,9 @@ public class PrescriptionPresenter {
         Patient patient = patientPresenter.selectionner();
 
         Prescription newPrescription = new Prescription(0, LocalDate.now(), medecin, patient);
+
+        List<Infos> infos = medicamentPresenter.selectionner(newPrescription);
+        newPrescription.setInfos(infos);
 
         newPrescription = model.add(newPrescription);
 

@@ -1,6 +1,8 @@
 package pharmacie.mvp.view;
 
+import pharmacie.metier.Infos;
 import pharmacie.metier.Medicament;
+import pharmacie.metier.Prescription;
 import pharmacie.mvp.presenter.MedicamentPresenter;
 
 import java.util.List;
@@ -15,6 +17,6 @@ public interface MedicamentViewInterface {
 
     void start();
 
-    Medicament selectionner(List<Medicament> list);
+    List<Infos> selectionner(List<Medicament> list, Prescription prescription);
 
 }

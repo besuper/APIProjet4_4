@@ -1,6 +1,8 @@
 package pharmacie.mvp.presenter;
 
+import pharmacie.metier.Infos;
 import pharmacie.metier.Medicament;
+import pharmacie.metier.Prescription;
 import pharmacie.mvp.model.DAO;
 import pharmacie.mvp.view.MedicamentViewInterface;
 
@@ -63,8 +65,8 @@ public class MedicamentPresenter {
         updateList();
     }
 
-    public Medicament selectionner() {
-        return view.selectionner(model.getAll());
+    public List<Infos> selectionner(Prescription prescription) {
+        return view.selectionner(model.getAll(), prescription);
     }
 
 }
