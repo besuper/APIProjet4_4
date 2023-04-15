@@ -69,4 +69,8 @@ public class MedicamentPresenter {
         return view.selectionner(model.getAll(), prescription);
     }
 
+    public Medicament read(int id) {
+        return model.read(id);
+    }
+
 }

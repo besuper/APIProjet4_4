@@ -62,7 +62,27 @@ public class MedicamentModel implements DAO<Medicament> {
 
     @Override
     public Medicament read(int id) {
-        // TODO: implement
+        String querySelect = "SELECT * FROM APIMEDICAMENT WHERE id_medicament = ?";
+
+        try (PreparedStatement statementSelect = dbConnect.prepareStatement(querySelect)) {
+            statementSelect.setInt(1, id);
+
+            ResultSet rs = statementSelect.executeQuery();
+
+            if (rs.next()) {
+                String code = rs.getString("code");
+                String nom = rs.getString("nom");
+                String description = rs.getString("description");
+                double prixUnitaire = rs.getDouble("prixunitaire");
+
+                Medicament medicament = new Medicament(id, code, nom, description, prixUnitaire);
+
+                return medicament;
+            }
+
+        } catch (SQLException e) {
+            logger.error("erreur getAll :" + e);
+        }
 
         return null;
     }

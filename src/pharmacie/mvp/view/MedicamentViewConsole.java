@@ -69,10 +69,12 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
         System.out.println("ID du médicament recherché: ");
         int idMedicament = scanner.nextInt();
 
-        for (Medicament p : this.medicaments) {
-            if (p.getId() == idMedicament) {
-                System.out.println(p);
-            }
+        Medicament med = presenter.read(idMedicament);
+
+        if(med == null) {
+            System.out.println("Médicament introuvable !");
+        }else {
+            System.out.println(med);
         }
     }
 
