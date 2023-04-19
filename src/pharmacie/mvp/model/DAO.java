@@ -8,7 +8,7 @@ public interface DAO<E> {
 
     E read(int id);
 
-    E update(E obj, String key, Object value);
+    E update(E obj);
 
     boolean remove(E obj);
 

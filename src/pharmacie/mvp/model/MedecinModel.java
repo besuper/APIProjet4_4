@@ -30,9 +30,7 @@ public class MedecinModel implements DAO<Medecin> {
 
     @Override
     public Medecin add(Medecin medecin) {
-        try {
-            CallableStatement cs = dbConnect.prepareCall("call APIINSERERMEDECIN(?, ?, ?, ?, ?)");
-
+        try(CallableStatement cs = dbConnect.prepareCall("call APIINSERERMEDECIN(?, ?, ?, ?, ?)")) {
             cs.setString(1, medecin.getMatricule());
             cs.setString(2, medecin.getPrenom());
             cs.setString(3, medecin.getTel());
@@ -56,7 +54,7 @@ public class MedecinModel implements DAO<Medecin> {
     public Medecin read(int id) {
         String query = "SELECT * FROM APIREADMEDECIN WHERE id_medecin = ?";
 
-        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)
         ) {
             preparedStatement.setInt(1, id);
 
@@ -148,16 +146,18 @@ public class MedecinModel implements DAO<Medecin> {
     }
 
     @Override
-    public Medecin update(Medecin medecin, String key, Object value) {
-        String queryUpdateNSS = "UPDATE APIMEDECIN SET " + key.toUpperCase() + " = ? WHERE ID_MEDECIN = ?";
+    public Medecin update(Medecin obj) {
+        String queryUpdateNSS = "UPDATE APIMEDECIN SET matricule = ?, nom = ?, prenom = ?, tel = ? WHERE ID_MEDECIN = ?";
 
         try (PreparedStatement preparedStatementUpdate = dbConnect.prepareStatement(queryUpdateNSS)) {
-            preparedStatementUpdate.setObject(1, value);
-            preparedStatementUpdate.setInt(2, medecin.getId());
+            preparedStatementUpdate.setString(1, obj.getMatricule());
+            preparedStatementUpdate.setString(2, obj.getNom());
+            preparedStatementUpdate.setString(3, obj.getPrenom());
+            preparedStatementUpdate.setString(4, obj.getTel());
 
             int n = preparedStatementUpdate.executeUpdate();
 
-            return medecin;
+            return obj;
         } catch (SQLException e) {
             logger.error("erreur update :" + e);
         }

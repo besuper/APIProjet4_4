@@ -31,7 +31,7 @@ public class MedicamentModel implements DAO<Medicament> {
         String querySelectID = "SELECT ID_MEDICAMENT FROM APIMEDICAMENT WHERE code = ?";
 
         try (PreparedStatement preparedStatementInsert = dbConnect.prepareStatement(queryInsert);
-             PreparedStatement preparedStatementSelect = dbConnect.prepareStatement(querySelectID);
+             PreparedStatement preparedStatementSelect = dbConnect.prepareStatement(querySelectID)
         ) {
             preparedStatementInsert.setString(1, medicament.getCode());
             preparedStatementInsert.setString(2, medicament.getNom());
@@ -75,9 +75,7 @@ public class MedicamentModel implements DAO<Medicament> {
                 String description = rs.getString("description");
                 double prixUnitaire = rs.getDouble("prixunitaire");
 
-                Medicament medicament = new Medicament(id, code, nom, description, prixUnitaire);
-
-                return medicament;
+                return new Medicament(id, code, nom, description, prixUnitaire);
             }
 
         } catch (SQLException e) {
@@ -132,16 +130,18 @@ public class MedicamentModel implements DAO<Medicament> {
     }
 
     @Override
-    public Medicament update(Medicament medicament, String key, Object value) {
-        String queryUpdateNSS = "UPDATE APIMEDICAMENT SET " + key.toUpperCase() + " = ? WHERE ID_MEDICAMENT = ?";
+    public Medicament update(Medicament obj) {
+        String queryUpdateNSS = "UPDATE APIMEDICAMENT SET code = ?, nom = ?, description = ?, prixunitaire = ? WHERE ID_MEDECIN = ?";
 
         try (PreparedStatement preparedStatementUpdate = dbConnect.prepareStatement(queryUpdateNSS)) {
-            preparedStatementUpdate.setObject(1, value);
-            preparedStatementUpdate.setInt(2, medicament.getId());
+            preparedStatementUpdate.setString(1, obj.getCode());
+            preparedStatementUpdate.setString(2, obj.getNom());
+            preparedStatementUpdate.setString(3, obj.getDescription());
+            preparedStatementUpdate.setDouble(4, obj.getPrixUnitaire());
 
             int n = preparedStatementUpdate.executeUpdate();
 
-            return medicament;
+            return obj;
         } catch (SQLException e) {
             logger.error("erreur update :" + e);
         }

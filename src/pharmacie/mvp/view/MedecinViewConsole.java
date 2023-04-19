@@ -5,7 +5,6 @@ import pharmacie.metier.Prescription;
 import pharmacie.mvp.presenter.MedecinPresenter;
 import pharmacie.utilitaires.Utilitaire;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,7 +13,6 @@ public class MedecinViewConsole implements MedecinViewInterface {
     private MedecinPresenter presenter;
     private List<Medecin> medecins;
     private final Scanner scanner = new Scanner(System.in);
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public MedecinViewConsole() {
     }
@@ -83,45 +81,18 @@ public class MedecinViewConsole implements MedecinViewInterface {
     }
 
     public void modification() {
-        System.out.println("Id du medecin recherché: ");
-        int idMedecin = scanner.nextInt();
-        scanner.skip("\n");
+        int nl = Utilitaire.choixElt(medecins) - 1;
 
-        System.out.println("1.modifier matricule\n2.modifier nom\n3.modifier prenom\n4.modifier tel\n5.Retour");
-        System.out.println("choix : ");
+        Medecin medecin = medecins.get(nl);
 
-        int ch = scanner.nextInt();
-        scanner.skip("\n");
+        String matricule = Utilitaire.modifyIfNotBlank("matricule", medecin.getMatricule());
+        String nom = Utilitaire.modifyIfNotBlank("nom", medecin.getNom());
+        String prenom = Utilitaire.modifyIfNotBlank("prenom", medecin.getPrenom());
+        String tel = Utilitaire.modifyIfNotBlank("tel", medecin.getTel());
 
-        Medecin modifierPatient = new Medecin(idMedecin, "", "", "", "");
+        Medecin medecinUpdate = new Medecin(medecin.getId(), matricule, nom, prenom, tel);
 
-        switch (ch) {
-            case 1:
-                System.out.println("Matricule: ");
-
-                presenter.modifierMedecinInfo(modifierPatient, "matricule", scanner.next());
-                break;
-            case 2:
-                System.out.println("Nom: ");
-
-                presenter.modifierMedecinInfo(modifierPatient, "nom", scanner.next());
-                break;
-            case 3:
-                System.out.println("Prenom: ");
-
-                presenter.modifierMedecinInfo(modifierPatient, "prenom", scanner.next());
-                break;
-
-            case 4:
-                System.out.println("Tel: ");
-
-                presenter.modifierMedecinInfo(modifierPatient, "tel", scanner.next());
-                return;
-            case 5:
-                break;
-            default:
-                System.out.println("choix invalide recommencez ");
-        }
+        presenter.update(medecinUpdate);
     }
 
     public void suppression() {
@@ -141,7 +112,7 @@ public class MedecinViewConsole implements MedecinViewInterface {
     }
 
     @Override
-    public void setListDatas(List medecins) {
+    public void setListDatas(List<Medecin> medecins) {
         this.medecins = medecins;
     }
 

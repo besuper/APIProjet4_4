@@ -79,46 +79,18 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
     }
 
     public void modification() {
-        System.out.println("Id du médicament recherché: ");
-        int idMedicament = scanner.nextInt();
+        int nl = Utilitaire.choixElt(medicaments) - 1;
 
-        scanner.skip("\n");
+        Medicament medicament = medicaments.get(nl);
 
-        System.out.println("1.modifier code\n2.modifier nom\n3.modifier description\n4.modifier prix unitaire\n5.Retour");
-        System.out.println("choix : ");
+        String code = Utilitaire.modifyIfNotBlank("code", medicament.getCode());
+        String nom = Utilitaire.modifyIfNotBlank("nom", medicament.getNom());
+        String description = Utilitaire.modifyIfNotBlank("description", medicament.getDescription());
+        // TODO: prix unitaire
 
-        int ch = scanner.nextInt();
-        scanner.skip("\n");
+        Medicament newMedicament = new Medicament(medicament.getId(), code, nom, description, 0.0);
 
-        Medicament modifierMedicament = new Medicament(idMedicament, "", "", "", 0.0);
-
-        switch (ch) {
-            case 1:
-                System.out.println("Code: ");
-
-                presenter.modifierMedicamentInfo(modifierMedicament, "code", scanner.next());
-                break;
-            case 2:
-                System.out.println("Nom: ");
-
-                presenter.modifierMedicamentInfo(modifierMedicament, "nom", scanner.next());
-                break;
-            case 3:
-                System.out.println("Prenom: ");
-
-                presenter.modifierMedicamentInfo(modifierMedicament, "description", scanner.next());
-                break;
-
-            case 4:
-                System.out.println("Prix unitaire: ");
-
-                presenter.modifierMedicamentInfo(modifierMedicament, "prixunitaire", scanner.nextDouble());
-                return;
-            case 5:
-                break;
-            default:
-                System.out.println("choix invalide recommencez ");
-        }
+        presenter.update(newMedicament);
     }
 
     public void suppression() {
@@ -138,7 +110,7 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
     }
 
     @Override
-    public void setListDatas(List medicaments) {
+    public void setListDatas(List<Medicament> medicaments) {
         this.medicaments = medicaments;
     }
 
@@ -157,7 +129,7 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
         System.out.println("Selectionnez les médicaments (-1 pour arrêt)");
 
         int index;
-        int quantity = 1;
+        int quantity;
         List<Infos> infos = new ArrayList<>();
 
         while(true) {

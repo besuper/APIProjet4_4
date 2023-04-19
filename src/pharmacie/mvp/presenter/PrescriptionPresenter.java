@@ -5,7 +5,6 @@ import pharmacie.mvp.model.DAO;
 import pharmacie.mvp.view.PrescriptionViewInterface;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PrescriptionPresenter {
@@ -17,7 +16,7 @@ public class PrescriptionPresenter {
     private PatientPresenter patientPresenter;
     private MedicamentPresenter medicamentPresenter;
 
-    public PrescriptionPresenter(DAO model, PrescriptionViewInterface view) {
+    public PrescriptionPresenter(DAO<Prescription> model, PrescriptionViewInterface view) {
         this.model = model;
         this.view = view;
         this.view.setPresenter(this);
@@ -81,16 +80,8 @@ public class PrescriptionPresenter {
         return model.read(idPrescription);
     }
 
-    public void modifierPrescriptionInfo(Prescription prescription, String key, Object value) {
-        Prescription updated = model.update(prescription, key, value);
-
-        if (updated != null) {
-            view.affMsg("Prescription modifié !");
-        } else {
-            view.affMsg("Erreur de modification");
-        }
-
-        updateList();
+    public Prescription update(Prescription prescription) {
+        return model.update(prescription);
     }
 
 }

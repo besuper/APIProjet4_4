@@ -84,47 +84,18 @@ public class PatientViewConsole implements PatientViewInterface {
     }
 
     public void modification() {
-        System.out.println("Id du patient recherché: ");
-        int idPatient = scanner.nextInt();
-        scanner.skip("\n");
+        int nl = Utilitaire.choixElt(patients) - 1;
 
-        System.out.println("1.modifier nss\n2.modifier nom\n3.modifier prenom\n4.modifier date de naissance\n5.Retour");
-        System.out.println("choix : ");
+        Patient patient = patients.get(nl);
 
-        int ch = scanner.nextInt();
-        scanner.skip("\n");
+        String nss = Utilitaire.modifyIfNotBlank("nss", patient.getNss());
+        String nom = Utilitaire.modifyIfNotBlank("nom", patient.getNom());
+        String prenom = Utilitaire.modifyIfNotBlank("prenom", patient.getPrenom());
+        // TODO: Date de naissance
 
-        Patient modifierPatient = new Patient(idPatient, "", "", "", null);
+        Patient newPatient = new Patient(patient.getId(), nss, nom, prenom, LocalDate.now());
 
-        switch (ch) {
-            case 1:
-                System.out.println("NSS: ");
-
-                presenter.modifierPatientInfo(modifierPatient, "nss", scanner.next());
-                break;
-            case 2:
-                System.out.println("Nom: ");
-
-                presenter.modifierPatientInfo(modifierPatient, "nom", scanner.next());
-                break;
-            case 3:
-                System.out.println("Prenom: ");
-
-                presenter.modifierPatientInfo(modifierPatient, "prenom", scanner.next());
-                break;
-
-            case 4:
-                System.out.println("Date de naissance (jj/mm/aaaa): ");
-                String date = scanner.next();
-                LocalDate dateNaissance = LocalDate.parse(date, formatter);
-
-                presenter.modifierPatientInfo(modifierPatient, "datenaissance", dateNaissance);
-                return;
-            case 5:
-                break;
-            default:
-                System.out.println("choix invalide recommencez ");
-        }
+        presenter.update(newPatient);
     }
 
     public void suppression() {
@@ -203,7 +174,7 @@ public class PatientViewConsole implements PatientViewInterface {
     }
 
     @Override
-    public void setListDatas(List patients) {
+    public void setListDatas(List<Patient> patients) {
         this.patients = patients;
     }
 

@@ -11,7 +11,7 @@ public class MedecinPresenter {
     private final DAO<Medecin> model;
     private final MedecinViewInterface view;
 
-    public MedecinPresenter(DAO model, MedecinViewInterface view) {
+    public MedecinPresenter(DAO<Medecin> model, MedecinViewInterface view) {
         this.model = model;
         this.view = view;
         this.view.setPresenter(this);
@@ -51,16 +51,8 @@ public class MedecinPresenter {
         updateList();
     }
 
-    public void modifierMedecinInfo(Medecin medecin, String key, Object value) {
-        Medecin updated = model.update(medecin, key, value);
-
-        if (updated != null) {
-            view.affMsg("Medecin modifié !");
-        } else {
-            view.affMsg("Erreur de modification");
-        }
-
-        updateList();
+    public Medecin update(Medecin medecin) {
+        return model.update(medecin);
     }
 
     public Medecin selectionner() {

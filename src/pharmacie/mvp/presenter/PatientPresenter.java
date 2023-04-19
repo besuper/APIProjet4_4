@@ -59,16 +59,8 @@ public class PatientPresenter {
         updateList();
     }
 
-    public void modifierPatientInfo(Patient patient, String key, Object value) {
-        Patient updated = model.update(patient, key, value);
-
-        if (updated != null) {
-            view.affMsg("Patient modifié !");
-        } else {
-            view.affMsg("Erreur de modification");
-        }
-
-        updateList();
+    public Patient update(Patient patient) {
+        return model.update(patient);
     }
 
     public Patient read(int idPatient) {

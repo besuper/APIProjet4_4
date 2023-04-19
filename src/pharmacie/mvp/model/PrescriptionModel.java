@@ -32,7 +32,7 @@ public class PrescriptionModel implements DAO<Prescription> {
         String querySelectID = "SELECT ID_PRESCRIPTION FROM APIPRESCRIPTION WHERE dateprescription = ? AND id_patient = ? AND id_medecin = ?";
 
         try (PreparedStatement preparedStatementInsert = dbConnect.prepareStatement(queryInsert);
-             PreparedStatement preparedStatementSelect = dbConnect.prepareStatement(querySelectID);
+             PreparedStatement preparedStatementSelect = dbConnect.prepareStatement(querySelectID)
         ) {
             preparedStatementInsert.setDate(1, Date.valueOf(prescription.getDatePrescription()));
             preparedStatementInsert.setInt(2, prescription.getPatient().getId());
@@ -71,7 +71,7 @@ public class PrescriptionModel implements DAO<Prescription> {
     public void addPrescriptionInfo(Infos infos) {
         String queryInsert = "INSERT INTO APIINFOS(id_prescription, id_medicament, quantite) VALUES (?, ?, ?)";
 
-        try (PreparedStatement preparedStatementInsert = dbConnect.prepareStatement(queryInsert);
+        try (PreparedStatement preparedStatementInsert = dbConnect.prepareStatement(queryInsert)
         ) {
             preparedStatementInsert.setInt(1, infos.getPrescription().getId());
             preparedStatementInsert.setInt(2, infos.getMedicament().getId());
@@ -184,16 +184,15 @@ public class PrescriptionModel implements DAO<Prescription> {
     }
 
     @Override
-    public Prescription update(Prescription prescription, String key, Object value) {
-        String queryUpdateNSS = "UPDATE APIPRESCRIPTION SET " + key.toUpperCase() + " = ? WHERE ID_PRESCRIPTION = ?";
+    public Prescription update(Prescription obj) {
+        String queryUpdateNSS = "UPDATE APIPRESCRIPTION SET dateprescription = ? WHERE ID_MEDECIN = ?";
 
         try (PreparedStatement preparedStatementUpdate = dbConnect.prepareStatement(queryUpdateNSS)) {
-            preparedStatementUpdate.setObject(1, value);
-            preparedStatementUpdate.setInt(2, prescription.getId());
+            preparedStatementUpdate.setDate(1, Date.valueOf(obj.getDatePrescription()));
 
             int n = preparedStatementUpdate.executeUpdate();
 
-            return prescription;
+            return obj;
         } catch (SQLException e) {
             logger.error("erreur update :" + e);
         }
@@ -206,7 +205,7 @@ public class PrescriptionModel implements DAO<Prescription> {
 
         List<Infos> infos = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)
         ) {
             preparedStatement.setInt(1, prescription.getId());
 

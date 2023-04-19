@@ -13,7 +13,7 @@ public class MedicamentPresenter {
     private final DAO<Medicament> model;
     private final MedicamentViewInterface view;
 
-    public MedicamentPresenter(DAO model, MedicamentViewInterface view) {
+    public MedicamentPresenter(DAO<Medicament> model, MedicamentViewInterface view) {
         this.model = model;
         this.view = view;
         this.view.setPresenter(this);
@@ -53,16 +53,8 @@ public class MedicamentPresenter {
         updateList();
     }
 
-    public void modifierMedicamentInfo(Medicament medicament, String key, Object value) {
-        Medicament updated = model.update(medicament, key, value);
-
-        if (updated != null) {
-            view.affMsg("Médicament modifié !");
-        } else {
-            view.affMsg("Erreur de modification");
-        }
-
-        updateList();
+    public Medicament update(Medicament medicament) {
+        return model.update(medicament);
     }
 
     public List<Infos> selectionner(Prescription prescription) {

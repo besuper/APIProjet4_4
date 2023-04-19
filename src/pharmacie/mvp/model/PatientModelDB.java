@@ -32,7 +32,7 @@ public class PatientModelDB implements DAO<Patient>, PatientSpecial {
         String querySelectID = "SELECT ID_PATIENT FROM APIPATIENT WHERE NSS = ?";
 
         try (PreparedStatement preparedStatementInsert = dbConnect.prepareStatement(queryInsert);
-             PreparedStatement preparedStatementSelect = dbConnect.prepareStatement(querySelectID);
+             PreparedStatement preparedStatementSelect = dbConnect.prepareStatement(querySelectID)
         ) {
             preparedStatementInsert.setString(1, patient.getNss());
             preparedStatementInsert.setString(2, patient.getNom());
@@ -65,7 +65,7 @@ public class PatientModelDB implements DAO<Patient>, PatientSpecial {
     public Patient read(int idPatient) {
         String query = "SELECT * FROM APIPATIENT WHERE id_patient = ?";
 
-        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query);
+        try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)
         ) {
             preparedStatement.setInt(1, idPatient);
 
@@ -131,16 +131,18 @@ public class PatientModelDB implements DAO<Patient>, PatientSpecial {
     }
 
     @Override
-    public Patient update(Patient patient, String key, Object value) {
-        String queryUpdateNSS = "UPDATE APIPATIENT SET " + key.toUpperCase() + " = ? WHERE ID_PATIENT = ?";
+    public Patient update(Patient obj) {
+        String queryUpdateNSS = "UPDATE APIPATIENT SET nss = ?, nom = ?, prenom = ?, datenaissance = ? WHERE ID_MEDECIN = ?";
 
         try (PreparedStatement preparedStatementUpdate = dbConnect.prepareStatement(queryUpdateNSS)) {
-            preparedStatementUpdate.setObject(1, value);
-            preparedStatementUpdate.setInt(2, patient.getId());
+            preparedStatementUpdate.setString(1, obj.getNom());
+            preparedStatementUpdate.setString(2, obj.getNom());
+            preparedStatementUpdate.setString(3, obj.getPrenom());
+            preparedStatementUpdate.setDate(4, Date.valueOf(obj.getDateNaissance()));
 
             int n = preparedStatementUpdate.executeUpdate();
 
-            return patient;
+            return obj;
         } catch (SQLException e) {
             logger.error("erreur update :" + e);
         }
