@@ -10,13 +10,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientModel implements DAO<Patient>, PatientSpecial {
+public class PatientModelHyb implements DAO<Patient>, PatientSpecial {
 
     private final Connection dbConnect;
 
-    private static final Logger logger = LogManager.getLogger(PatientModel.class);
+    private static final Logger logger = LogManager.getLogger(PatientModelHyb.class);
 
-    public PatientModel() {
+    public PatientModelHyb() {
         dbConnect = DBConnection.getConnection();
         if (dbConnect == null) {
             logger.error("erreur de connexion");
@@ -101,7 +101,7 @@ public class PatientModel implements DAO<Patient>, PatientSpecial {
 
                     Prescription prescription = new Prescription(idPrescription, dateprescription, medecin, patient);
 
-                    prescription.setInfos(getInfosFromPrescription(prescription));
+                    // prescription.setInfos(getInfosFromPrescription(prescription));
 
                     prescriptions.add(prescription);
                 } while (rs.next());

@@ -30,34 +30,21 @@ public class MedecinModel implements DAO<Medecin> {
 
     @Override
     public Medecin add(Medecin medecin) {
-        System.out.println(medecin);
+        try {
+            CallableStatement cs = dbConnect.prepareCall("call APIINSERERMEDECIN(?, ?, ?, ?, ?)");
 
-        String queryInsert = "INSERT INTO APIMEDECIN(matricule, prenom, tel, nom) VALUES (?, ?, ?, ?)";
-        String querySelectID = "SELECT ID_MEDECIN FROM APIMEDECIN WHERE matricule = ?";
+            cs.setString(1, medecin.getMatricule());
+            cs.setString(2, medecin.getPrenom());
+            cs.setString(3, medecin.getTel());
+            cs.setString(4, medecin.getNom());
 
-        try (PreparedStatement preparedStatementInsert = dbConnect.prepareStatement(queryInsert);
-             PreparedStatement preparedStatementSelect = dbConnect.prepareStatement(querySelectID);
-        ) {
-            preparedStatementInsert.setString(1, medecin.getMatricule());
-            preparedStatementInsert.setString(2, medecin.getPrenom());
-            preparedStatementInsert.setString(3, medecin.getTel());
-            preparedStatementInsert.setString(4, medecin.getNom());
+            cs.registerOutParameter(5, Types.INTEGER);
 
-            int n = preparedStatementInsert.executeUpdate();
+            cs.execute();
 
-            if (n == 1) {
-                preparedStatementSelect.setString(1, medecin.getMatricule());
+            int idMedecin = cs.getInt(5);
 
-                ResultSet rs = preparedStatementSelect.executeQuery();
-
-                if (rs.next()) {
-                    int idMedecin = rs.getInt(1);
-
-                    return new Medecin(idMedecin, medecin.getMatricule(), medecin.getNom(), medecin.getPrenom(), medecin.getTel());
-                } else {
-                    logger.error("record introuvable");
-                }
-            }
+            return new Medecin(idMedecin, medecin.getMatricule(), medecin.getNom(), medecin.getPrenom(), medecin.getTel());
         } catch (SQLException e) {
             logger.error("erreur ajout :" + e);
         }

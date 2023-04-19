@@ -38,7 +38,7 @@ public class GestionPharmacie {
     PrescriptionPresenter ppp;
 
     public void gestion() {
-        daoPatient = new PatientModel();
+        daoPatient = new PatientModelDB();
         viewPatient = new PatientViewConsole();
         pp = new PatientPresenter(daoPatient, viewPatient);
 
