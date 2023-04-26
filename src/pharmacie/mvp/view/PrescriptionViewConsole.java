@@ -6,6 +6,7 @@ import pharmacie.mvp.presenter.PrescriptionPresenter;
 import pharmacie.utilitaires.Utilitaire;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +16,8 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
 
     private List<Prescription> prescriptions;
     private final Scanner scanner = new Scanner(System.in);
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public PrescriptionViewConsole() {
     }
@@ -75,9 +78,10 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
 
         Prescription prescription = prescriptions.get(nl);
 
-        // TODO: Date de prescription
+        String date = Utilitaire.modifyIfNotBlank("Dete de prescription ", Utilitaire.getDateFrench(prescription.getDatePrescription()));
+        LocalDate datePrescription = LocalDate.parse(date, formatter);
 
-        Prescription newPrescription = new Prescription(prescription.getId(), LocalDate.now(), prescription.getMedecin(), prescription.getPatient());
+        Prescription newPrescription = new Prescription(prescription.getId(), datePrescription, prescription.getMedecin(), prescription.getPatient());
 
         presenter.update(newPrescription);
     }

@@ -86,9 +86,10 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
         String code = Utilitaire.modifyIfNotBlank("code", medicament.getCode());
         String nom = Utilitaire.modifyIfNotBlank("nom", medicament.getNom());
         String description = Utilitaire.modifyIfNotBlank("description", medicament.getDescription());
-        // TODO: prix unitaire
+        String prix = Utilitaire.modifyIfNotBlank("prix unitaire", String.valueOf(medicament.getPrixUnitaire()));
+        double prixUnitaire = Double.parseDouble(prix);
 
-        Medicament newMedicament = new Medicament(medicament.getId(), code, nom, description, 0.0);
+        Medicament newMedicament = new Medicament(medicament.getId(), code, nom, description, prixUnitaire);
 
         presenter.update(newMedicament);
     }

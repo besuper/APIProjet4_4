@@ -91,9 +91,10 @@ public class PatientViewConsole implements PatientViewInterface {
         String nss = Utilitaire.modifyIfNotBlank("nss", patient.getNss());
         String nom = Utilitaire.modifyIfNotBlank("nom", patient.getNom());
         String prenom = Utilitaire.modifyIfNotBlank("prenom", patient.getPrenom());
-        // TODO: Date de naissance
+        String date = Utilitaire.modifyIfNotBlank("Dete de naissance ", Utilitaire.getDateFrench(patient.getDateNaissance()));
+        LocalDate dateNaissance = LocalDate.parse(date, formatter);
 
-        Patient newPatient = new Patient(patient.getId(), nss, nom, prenom, LocalDate.now());
+        Patient newPatient = new Patient(patient.getId(), nss, nom, prenom, dateNaissance);
 
         presenter.update(newPatient);
     }

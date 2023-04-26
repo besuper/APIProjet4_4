@@ -1,5 +1,7 @@
 package pharmacie.utilitaires;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -50,6 +52,11 @@ public class Utilitaire {
         String newValue = sc.nextLine();
         if (newValue.isBlank()) return oldValue;
         return newValue;
+    }
+
+    public static String getDateFrench(LocalDate d){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return dtf.format(d);
     }
 
 }
