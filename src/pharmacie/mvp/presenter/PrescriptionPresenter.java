@@ -1,6 +1,6 @@
 package pharmacie.mvp.presenter;
 
-import pharmacie.metier.*;
+import pharmacie.designpatterns.builder.*;
 import pharmacie.mvp.model.DAO;
 import pharmacie.mvp.view.PrescriptionViewInterface;
 
@@ -48,7 +48,11 @@ public class PrescriptionPresenter {
         Medecin medecin = medecinPresenter.selectionner();
         Patient patient = patientPresenter.selectionner();
 
-        Prescription newPrescription = new Prescription(0, LocalDate.now(), medecin, patient);
+        Prescription newPrescription = new Prescription.PrescriptionBuilder()
+                .setDatePrescription(LocalDate.now())
+                .setMedecin(medecin)
+                .setPatient(patient)
+                .build();
 
         List<Infos> infos = medicamentPresenter.selectionner(newPrescription);
         newPrescription.setInfos(infos);

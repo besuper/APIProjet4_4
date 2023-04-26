@@ -3,7 +3,7 @@ package pharmacie.mvp.model;
 import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pharmacie.metier.*;
+import pharmacie.designpatterns.builder.*;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -52,7 +52,7 @@ public class PrescriptionModel implements DAO<Prescription> {
 
                     prescription.setId(idPrescription);
 
-                    for(Infos infos : prescription.getInfos()) {
+                    for (Infos infos : prescription.getInfos()) {
                         addPrescriptionInfo(infos);
                     }
 
@@ -102,7 +102,13 @@ public class PrescriptionModel implements DAO<Prescription> {
                 String prenomPatient = rs.getString("prenom_pat");
                 LocalDate dateNaissance = rs.getDate("datenaissance").toLocalDate();
 
-                Patient patient = new Patient(idPatient, nss, nomPatient, prenomPatient, dateNaissance);
+                Patient patient = new Patient.PatientBuilder()
+                        .setId(idPatient)
+                        .setNss(nss)
+                        .setNom(nomPatient)
+                        .setPrenom(prenomPatient)
+                        .setDateNaissance(dateNaissance)
+                        .build();
 
                 int idMedecin = rs.getInt("id_medecin");
                 String matricule = rs.getString("matricule");
@@ -110,9 +116,20 @@ public class PrescriptionModel implements DAO<Prescription> {
                 String prenomMedecin = rs.getString("prenom_med");
                 String tel = rs.getString("tel");
 
-                Medecin medecin = new Medecin(idMedecin, matricule, nomMedecin, prenomMedecin, tel);
+                Medecin medecin = new Medecin.MedecinBuilder()
+                        .setId(idMedecin)
+                        .setMatricule(matricule)
+                        .setNom(nomMedecin)
+                        .setPrenom(prenomMedecin)
+                        .setTel(tel)
+                        .build();
 
-                Prescription prescription = new Prescription(idPrescription, datePrescription, medecin, patient);
+                Prescription prescription = new Prescription.PrescriptionBuilder()
+                        .setId(idPrescription)
+                        .setDatePrescription(datePrescription)
+                        .setPatient(patient)
+                        .setMedecin(medecin)
+                        .build();
 
                 prescription.setInfos(getInfosFromPrescription(prescription));
 
@@ -162,7 +179,13 @@ public class PrescriptionModel implements DAO<Prescription> {
                 String prenomPatient = rs.getString("prenom_pat");
                 LocalDate dateNaissance = rs.getDate("datenaissance").toLocalDate();
 
-                Patient patient = new Patient(idPatient, nss, nomPatient, prenomPatient, dateNaissance);
+                Patient patient = new Patient.PatientBuilder()
+                        .setId(idPatient)
+                        .setNss(nss)
+                        .setNom(nomPatient)
+                        .setPrenom(prenomPatient)
+                        .setDateNaissance(dateNaissance)
+                        .build();
 
                 int idMedecin = rs.getInt("id_medecin");
                 String matricule = rs.getString("matricule");
@@ -170,9 +193,21 @@ public class PrescriptionModel implements DAO<Prescription> {
                 String prenomMedecin = rs.getString("prenom_med");
                 String tel = rs.getString("tel");
 
-                Medecin medecin = new Medecin(idMedecin, matricule, nomMedecin, prenomMedecin, tel);
+                Medecin medecin = new Medecin.MedecinBuilder()
+                        .setId(idMedecin)
+                        .setMatricule(matricule)
+                        .setNom(nomMedecin)
+                        .setPrenom(prenomMedecin)
+                        .setTel(tel)
+                        .build();
 
-                Prescription prescription = new Prescription(idPrescription, datePrescription, medecin, patient);
+                Prescription prescription = new Prescription.PrescriptionBuilder()
+                        .setId(idPrescription)
+                        .setDatePrescription(datePrescription)
+                        .setPatient(patient)
+                        .setMedecin(medecin)
+                        .build();
+
                 prescriptions.add(prescription);
             }
 
@@ -220,9 +255,19 @@ public class PrescriptionModel implements DAO<Prescription> {
                     String description = rs.getString("description");
                     double prixUnitaire = rs.getDouble("prixunitaire");
 
-                    Medicament medicament = new Medicament(medId, code, nom, description, prixUnitaire);
+                    Medicament medicament = new Medicament.MedicamentBuilder()
+                            .setId(medId)
+                            .setCode(code)
+                            .setNom(nom)
+                            .setDescription(description)
+                            .setPrixUnitaire(prixUnitaire)
+                            .build();
 
-                    Infos info = new Infos(quantite, medicament, prescription);
+                    Infos info = new Infos.InfosBuilder()
+                            .setQuantite(quantite)
+                            .setMedicament(medicament)
+                            .setPrescription(prescription)
+                            .build();
 
                     infos.add(info);
                 } while (rs.next());

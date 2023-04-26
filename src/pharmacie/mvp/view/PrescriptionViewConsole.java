@@ -1,7 +1,7 @@
 package pharmacie.mvp.view;
 
-import pharmacie.metier.Infos;
-import pharmacie.metier.Prescription;
+import pharmacie.designpatterns.builder.Infos;
+import pharmacie.designpatterns.builder.Prescription;
 import pharmacie.mvp.presenter.PrescriptionPresenter;
 import pharmacie.utilitaires.Utilitaire;
 
@@ -78,10 +78,15 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
 
         Prescription prescription = prescriptions.get(nl);
 
-        String date = Utilitaire.modifyIfNotBlank("Dete de prescription ", Utilitaire.getDateFrench(prescription.getDatePrescription()));
+        String date = Utilitaire.modifyIfNotBlank("Date de prescription ", Utilitaire.getDateFrench(prescription.getDatePrescription()));
         LocalDate datePrescription = LocalDate.parse(date, formatter);
 
-        Prescription newPrescription = new Prescription(prescription.getId(), datePrescription, prescription.getMedecin(), prescription.getPatient());
+        Prescription newPrescription = new Prescription.PrescriptionBuilder()
+                .setId(prescription.getId())
+                .setDatePrescription(datePrescription)
+                .setMedecin(prescription.getMedecin())
+                .setPatient(prescription.getPatient())
+                .build();
 
         presenter.update(newPrescription);
     }
@@ -92,7 +97,9 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
         int idPrescription = scanner.nextInt();
         scanner.skip("\n");
 
-        Prescription modifierPrescription = new Prescription(idPrescription, null, null, null);
+        Prescription modifierPrescription = new Prescription.PrescriptionBuilder()
+                .setId(idPrescription)
+                .build();
 
         presenter.removePrescription(modifierPrescription);
     }

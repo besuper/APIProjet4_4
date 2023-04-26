@@ -1,8 +1,8 @@
 package pharmacie.mvp.view;
 
-import pharmacie.metier.Medecin;
-import pharmacie.metier.Patient;
-import pharmacie.metier.Prescription;
+import pharmacie.designpatterns.builder.Medecin;
+import pharmacie.designpatterns.builder.Patient;
+import pharmacie.designpatterns.builder.Prescription;
 import pharmacie.mvp.presenter.PatientPresenter;
 import pharmacie.utilitaires.Utilitaire;
 
@@ -65,7 +65,12 @@ public class PatientViewConsole implements PatientViewInterface {
         String date = scanner.next();
         LocalDate dateNaissance = LocalDate.parse(date, formatter);
 
-        presenter.addPatient(new Patient(0, nss, nom, prenom, dateNaissance));
+        presenter.addPatient(new Patient.PatientBuilder()
+                .setNss(nss)
+                .setNom(nom)
+                .setPrenom(prenom)
+                .setDateNaissance(dateNaissance)
+                .build());
     }
 
     public void recherche() {
@@ -94,7 +99,13 @@ public class PatientViewConsole implements PatientViewInterface {
         String date = Utilitaire.modifyIfNotBlank("Dete de naissance ", Utilitaire.getDateFrench(patient.getDateNaissance()));
         LocalDate dateNaissance = LocalDate.parse(date, formatter);
 
-        Patient newPatient = new Patient(patient.getId(), nss, nom, prenom, dateNaissance);
+        Patient newPatient = new Patient.PatientBuilder()
+                .setId(patient.getId())
+                .setNss(nss)
+                .setNom(nom)
+                .setPrenom(prenom)
+                .setDateNaissance(dateNaissance)
+                .build();
 
         presenter.update(newPatient);
     }
@@ -105,7 +116,9 @@ public class PatientViewConsole implements PatientViewInterface {
         int idPatient = scanner.nextInt();
         scanner.skip("\n");
 
-        Patient modifierPatient = new Patient(idPatient, "", "", "", null);
+        Patient modifierPatient = new Patient.PatientBuilder()
+                .setId(idPatient)
+                .build();
 
         presenter.removePatient(modifierPatient);
     }

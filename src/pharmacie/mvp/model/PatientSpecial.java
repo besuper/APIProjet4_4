@@ -1,8 +1,8 @@
 package pharmacie.mvp.model;
 
-import pharmacie.metier.Medecin;
-import pharmacie.metier.Patient;
-import pharmacie.metier.Prescription;
+import pharmacie.designpatterns.builder.Medecin;
+import pharmacie.designpatterns.builder.Patient;
+import pharmacie.designpatterns.builder.Prescription;
 
 import java.time.LocalDate;
 import java.util.List;

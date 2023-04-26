@@ -3,7 +3,7 @@ package pharmacie.mvp.model;
 import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pharmacie.metier.*;
+import pharmacie.designpatterns.builder.*;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -49,7 +49,13 @@ public class PatientModelHyb implements DAO<Patient>, PatientSpecial {
                 if (rs.next()) {
                     int idPatient = rs.getInt(1);
 
-                    return new Patient(idPatient, patient.getNss(), patient.getNom(), patient.getPrenom(), patient.getDateNaissance());
+                    return new Patient.PatientBuilder()
+                            .setId(idPatient)
+                            .setNss(patient.getNss())
+                            .setNom(patient.getNom())
+                            .setPrenom(patient.getPrenom())
+                            .setDateNaissance(patient.getDateNaissance())
+                            .build();
                 } else {
                     logger.error("record introuvable");
                 }
@@ -77,7 +83,13 @@ public class PatientModelHyb implements DAO<Patient>, PatientSpecial {
                 String prenom = rs.getString(4);
                 LocalDate datenaissance = rs.getDate(5).toLocalDate();
 
-                Patient patient = new Patient(idPatient, nss, nom, prenom, datenaissance);
+                Patient patient = new Patient.PatientBuilder()
+                        .setId(idPatient)
+                        .setNss(nss)
+                        .setNom(nom)
+                        .setPrenom(prenom)
+                        .setDateNaissance(datenaissance)
+                        .build();
 
                 List<Prescription> prescriptions = new ArrayList<>();
 
@@ -97,9 +109,20 @@ public class PatientModelHyb implements DAO<Patient>, PatientSpecial {
                     String nom_med = rs.getString(11);
                     String tel = rs.getString(12);
 
-                    Medecin medecin = new Medecin(idMedecin, matricule, nom_med, prenom_med, tel);
+                    Medecin medecin = new Medecin.MedecinBuilder()
+                            .setId(idMedecin)
+                            .setMatricule(matricule)
+                            .setNom(nom_med)
+                            .setPrenom(prenom_med)
+                            .setTel(tel)
+                            .build();
 
-                    Prescription prescription = new Prescription(idPrescription, dateprescription, medecin, patient);
+                    Prescription prescription = new Prescription.PrescriptionBuilder()
+                            .setId(idPrescription)
+                            .setDatePrescription(dateprescription)
+                            .setMedecin(medecin)
+                            .setPatient(patient)
+                            .build();
 
                     prescription.setInfos(getInfosFromPrescription(prescription));
 
@@ -137,9 +160,19 @@ public class PatientModelHyb implements DAO<Patient>, PatientSpecial {
                     String description = rs.getString("description");
                     double prixUnitaire = rs.getDouble("prixunitaire");
 
-                    Medicament medicament = new Medicament(medId, code, nom, description, prixUnitaire);
+                    Medicament medicament = new Medicament.MedicamentBuilder()
+                            .setId(medId)
+                            .setCode(code)
+                            .setNom(nom)
+                            .setDescription(description)
+                            .setPrixUnitaire(prixUnitaire)
+                            .build();
 
-                    Infos info = new Infos(quantite, medicament, prescription);
+                    Infos info = new Infos.InfosBuilder()
+                            .setQuantite(quantite)
+                            .setMedicament(medicament)
+                            .setPrescription(prescription)
+                            .build();
 
                     infos.add(info);
                 } while (rs.next());
@@ -186,7 +219,14 @@ public class PatientModelHyb implements DAO<Patient>, PatientSpecial {
                 String prenom = rs.getString(4);
                 LocalDate dateNaissance = rs.getDate(5).toLocalDate();
 
-                Patient patient = new Patient(idPatient, nss, nom, prenom, dateNaissance);
+                Patient patient = new Patient.PatientBuilder()
+                        .setId(idPatient)
+                        .setNss(nss)
+                        .setNom(nom)
+                        .setPrenom(prenom)
+                        .setDateNaissance(dateNaissance)
+                        .build();
+
                 patients.add(patient);
             }
 
@@ -245,8 +285,8 @@ public class PatientModelHyb implements DAO<Patient>, PatientSpecial {
     public List<Prescription> prescriptionsDate(Patient patient, LocalDate debut, LocalDate fin) {
         List<Prescription> prescriptions = new ArrayList<>();
 
-        for(Prescription pres : patient.getPrescription()) {
-            if(pres.getDatePrescription().isAfter(debut) && pres.getDatePrescription().isBefore(fin)) {
+        for (Prescription pres : patient.getPrescription()) {
+            if (pres.getDatePrescription().isAfter(debut) && pres.getDatePrescription().isBefore(fin)) {
                 prescriptions.add(pres);
             }
         }

@@ -3,9 +3,9 @@ package pharmacie.mvp.model;
 import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pharmacie.metier.Medecin;
-import pharmacie.metier.Patient;
-import pharmacie.metier.Prescription;
+import pharmacie.designpatterns.builder.Medecin;
+import pharmacie.designpatterns.builder.Patient;
+import pharmacie.designpatterns.builder.Prescription;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -30,7 +30,7 @@ public class MedecinModel implements DAO<Medecin> {
 
     @Override
     public Medecin add(Medecin medecin) {
-        try(CallableStatement cs = dbConnect.prepareCall("call APIINSERERMEDECIN(?, ?, ?, ?, ?)")) {
+        try (CallableStatement cs = dbConnect.prepareCall("call APIINSERERMEDECIN(?, ?, ?, ?, ?)")) {
             cs.setString(1, medecin.getMatricule());
             cs.setString(2, medecin.getPrenom());
             cs.setString(3, medecin.getTel());
@@ -42,7 +42,13 @@ public class MedecinModel implements DAO<Medecin> {
 
             int idMedecin = cs.getInt(5);
 
-            return new Medecin(idMedecin, medecin.getMatricule(), medecin.getNom(), medecin.getPrenom(), medecin.getTel());
+            return new Medecin.MedecinBuilder()
+                    .setId(idMedecin)
+                    .setMatricule(medecin.getMatricule())
+                    .setNom(medecin.getNom())
+                    .setPrenom(medecin.getPrenom())
+                    .setTel(medecin.getTel())
+                    .build();
         } catch (SQLException e) {
             logger.error("erreur ajout :" + e);
         }
@@ -65,14 +71,26 @@ public class MedecinModel implements DAO<Medecin> {
                 String tel = rs.getString("tel");
                 String nom_medecin = rs.getString("nom_medecin");
                 String prenom_medecin = rs.getString("prenom_medecin");
-                Medecin medecin = new Medecin(id, matricule, nom_medecin, prenom_medecin, tel);
+                Medecin medecin = new Medecin.MedecinBuilder()
+                        .setId(id)
+                        .setMatricule(matricule)
+                        .setNom(nom_medecin)
+                        .setPrenom(prenom_medecin)
+                        .setTel(tel)
+                        .build();
 
                 int idPatient = rs.getInt("id_patient");
                 String nss = rs.getString("nss");
                 String nom_patient = rs.getString("nom_patient");
                 String prenom_patient = rs.getString("prenom_patient");
                 LocalDate dateNaissance = rs.getDate("datenaissance").toLocalDate();
-                Patient patient = new Patient(idPatient, nss, nom_patient, prenom_patient, dateNaissance);
+                Patient patient = new Patient.PatientBuilder()
+                        .setId(idPatient)
+                        .setNss(nss)
+                        .setNom(nom_patient)
+                        .setPrenom(prenom_patient)
+                        .setDateNaissance(dateNaissance)
+                        .build();
 
                 List<Prescription> prescriptions = new ArrayList<>();
 
@@ -85,7 +103,12 @@ public class MedecinModel implements DAO<Medecin> {
 
                     LocalDate datePrescription = rs.getDate("dateprescription").toLocalDate();
 
-                    Prescription prescription = new Prescription(idPrescription, datePrescription, medecin, patient);
+                    Prescription prescription = new Prescription.PrescriptionBuilder()
+                            .setId(idPrescription)
+                            .setDatePrescription(datePrescription)
+                            .setMedecin(medecin)
+                            .setPatient(patient)
+                            .build();
 
                     prescriptions.add(prescription);
                 } while (rs.next());
@@ -134,7 +157,14 @@ public class MedecinModel implements DAO<Medecin> {
                 String nom = rs.getString("nom");
                 String tel = rs.getString("tel");
 
-                Medecin medecin = new Medecin(idMedecin, matricule, nom, prenom, tel);
+                Medecin medecin = new Medecin.MedecinBuilder()
+                        .setId(idMedecin)
+                        .setMatricule(matricule)
+                        .setNom(nom)
+                        .setPrenom(prenom)
+                        .setTel(tel)
+                        .build();
+
                 medecins.add(medecin);
             }
 

@@ -3,7 +3,7 @@ package pharmacie.mvp.model;
 import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pharmacie.metier.Medicament;
+import pharmacie.designpatterns.builder.Medicament;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,7 +48,13 @@ public class MedicamentModel implements DAO<Medicament> {
                 if (rs.next()) {
                     int idMedicament = rs.getInt(1);
 
-                    return new Medicament(idMedicament, medicament.getCode(), medicament.getNom(), medicament.getDescription(), medicament.getPrixUnitaire());
+                    return new Medicament.MedicamentBuilder()
+                            .setId(idMedicament)
+                            .setCode(medicament.getCode())
+                            .setNom(medicament.getNom())
+                            .setDescription(medicament.getDescription())
+                            .setPrixUnitaire(medicament.getPrixUnitaire())
+                            .build();
                 } else {
                     logger.error("record introuvable");
                 }
@@ -75,7 +81,13 @@ public class MedicamentModel implements DAO<Medicament> {
                 String description = rs.getString("description");
                 double prixUnitaire = rs.getDouble("prixunitaire");
 
-                return new Medicament(id, code, nom, description, prixUnitaire);
+                return new Medicament.MedicamentBuilder()
+                        .setId(id)
+                        .setCode(code)
+                        .setNom(nom)
+                        .setDescription(description)
+                        .setPrixUnitaire(prixUnitaire)
+                        .build();
             }
 
         } catch (SQLException e) {
@@ -118,7 +130,14 @@ public class MedicamentModel implements DAO<Medicament> {
                 String description = rs.getString("description");
                 double prixUnitaire = rs.getDouble("prixunitaire");
 
-                Medicament medicament = new Medicament(idMedicament, code, nom, description, prixUnitaire);
+                Medicament medicament = new Medicament.MedicamentBuilder()
+                        .setId(idMedicament)
+                        .setCode(code)
+                        .setNom(nom)
+                        .setDescription(description)
+                        .setPrixUnitaire(prixUnitaire)
+                        .build();
+
                 medicaments.add(medicament);
             }
 

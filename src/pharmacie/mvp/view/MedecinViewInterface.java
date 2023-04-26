@@ -1,6 +1,6 @@
 package pharmacie.mvp.view;
 
-import pharmacie.metier.Medecin;
+import pharmacie.designpatterns.builder.Medecin;
 import pharmacie.mvp.presenter.MedecinPresenter;
 
 import java.util.List;

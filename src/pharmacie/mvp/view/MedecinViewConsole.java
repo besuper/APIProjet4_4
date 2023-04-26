@@ -1,7 +1,6 @@
 package pharmacie.mvp.view;
 
-import pharmacie.metier.Medecin;
-import pharmacie.metier.Prescription;
+import pharmacie.designpatterns.builder.*;
 import pharmacie.mvp.presenter.MedecinPresenter;
 import pharmacie.utilitaires.Utilitaire;
 
@@ -60,7 +59,13 @@ public class MedecinViewConsole implements MedecinViewInterface {
         System.out.println("Tel: ");
         String tel = scanner.next();
 
-        presenter.addMedecin(new Medecin(0, matricule, nom, prenom, tel));
+        presenter.addMedecin(new Medecin.MedecinBuilder()
+                .setNom(nom)
+                .setPrenom(prenom)
+                .setMatricule(matricule)
+                .setTel(tel)
+                .build()
+        );
     }
 
     public void recherche() {
@@ -90,7 +95,13 @@ public class MedecinViewConsole implements MedecinViewInterface {
         String prenom = Utilitaire.modifyIfNotBlank("prenom", medecin.getPrenom());
         String tel = Utilitaire.modifyIfNotBlank("tel", medecin.getTel());
 
-        Medecin medecinUpdate = new Medecin(medecin.getId(), matricule, nom, prenom, tel);
+        Medecin medecinUpdate = new Medecin.MedecinBuilder()
+                .setId(medecin.getId())
+                .setNom(nom)
+                .setPrenom(prenom)
+                .setMatricule(matricule)
+                .setTel(tel)
+                .build();
 
         presenter.update(medecinUpdate);
     }
@@ -101,7 +112,9 @@ public class MedecinViewConsole implements MedecinViewInterface {
         int idMedecin = scanner.nextInt();
         scanner.skip("\n");
 
-        Medecin modifierPatient = new Medecin(idMedecin, "", "", "", "");
+        Medecin modifierPatient = new Medecin.MedecinBuilder()
+                .setId(idMedecin)
+                .build();
 
         presenter.removeMedecin(modifierPatient);
     }

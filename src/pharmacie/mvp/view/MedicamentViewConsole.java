@@ -1,8 +1,8 @@
 package pharmacie.mvp.view;
 
-import pharmacie.metier.Infos;
-import pharmacie.metier.Medicament;
-import pharmacie.metier.Prescription;
+import pharmacie.designpatterns.builder.Infos;
+import pharmacie.designpatterns.builder.Medicament;
+import pharmacie.designpatterns.builder.Prescription;
 import pharmacie.mvp.presenter.MedicamentPresenter;
 import pharmacie.utilitaires.Utilitaire;
 
@@ -62,7 +62,12 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
         System.out.println("Prix unitaire: ");
         double prixUnitaire = scanner.nextDouble();
 
-        presenter.addMedicament(new Medicament(0, code, nom, description, prixUnitaire));
+        presenter.addMedicament(new Medicament.MedicamentBuilder()
+                .setCode(code)
+                .setNom(nom)
+                .setDescription(description)
+                .setPrixUnitaire(prixUnitaire)
+                .build());
     }
 
     public void recherche() {
@@ -71,9 +76,9 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
 
         Medicament med = presenter.read(idMedicament);
 
-        if(med == null) {
+        if (med == null) {
             System.out.println("Médicament introuvable !");
-        }else {
+        } else {
             System.out.println(med);
         }
     }
@@ -89,7 +94,13 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
         String prix = Utilitaire.modifyIfNotBlank("prix unitaire", String.valueOf(medicament.getPrixUnitaire()));
         double prixUnitaire = Double.parseDouble(prix);
 
-        Medicament newMedicament = new Medicament(medicament.getId(), code, nom, description, prixUnitaire);
+        Medicament newMedicament = new Medicament.MedicamentBuilder()
+                .setId(medicament.getId())
+                .setCode(code)
+                .setNom(nom)
+                .setDescription(description)
+                .setPrixUnitaire(prixUnitaire)
+                .build();
 
         presenter.update(newMedicament);
     }
@@ -100,7 +111,9 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
         int idMedicament = scanner.nextInt();
         scanner.skip("\n");
 
-        Medicament modifierMedicament = new Medicament(idMedicament, "", "", "", 0.0);
+        Medicament modifierMedicament = new Medicament.MedicamentBuilder()
+                .setId(idMedicament)
+                .build();
 
         presenter.removeMedicament(modifierMedicament);
     }
@@ -133,15 +146,19 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
         int quantity;
         List<Infos> infos = new ArrayList<>();
 
-        while(true) {
+        while (true) {
             index = Utilitaire.choixListeM(list);
 
-            if(index == -1) break;
+            if (index == -1) break;
 
             System.out.println("Quantité : ");
             quantity = scanner.nextInt();
 
-            infos.add(new Infos(quantity, list.get(index - 1), prescription));
+            infos.add(new Infos.InfosBuilder()
+                    .setQuantite(quantity)
+                    .setMedicament(list.get(index - 1))
+                    .setPrescription(prescription)
+                    .build());
         }
 
         return infos;

@@ -1,8 +1,8 @@
 package pharmacie.mvp.presenter;
 
-import pharmacie.metier.Medecin;
-import pharmacie.metier.Patient;
-import pharmacie.metier.Prescription;
+import pharmacie.designpatterns.builder.Medecin;
+import pharmacie.designpatterns.builder.Patient;
+import pharmacie.designpatterns.builder.Prescription;
 import pharmacie.mvp.model.DAO;
 import pharmacie.mvp.model.PatientSpecial;
 import pharmacie.mvp.view.PatientViewInterface;

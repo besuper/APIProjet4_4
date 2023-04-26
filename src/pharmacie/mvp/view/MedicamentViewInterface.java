@@ -1,8 +1,8 @@
 package pharmacie.mvp.view;
 
-import pharmacie.metier.Infos;
-import pharmacie.metier.Medicament;
-import pharmacie.metier.Prescription;
+import pharmacie.designpatterns.builder.Infos;
+import pharmacie.designpatterns.builder.Medicament;
+import pharmacie.designpatterns.builder.Prescription;
 import pharmacie.mvp.presenter.MedicamentPresenter;
 
 import java.util.List;

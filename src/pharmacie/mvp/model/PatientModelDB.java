@@ -3,7 +3,9 @@ package pharmacie.mvp.model;
 import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pharmacie.metier.*;
+import pharmacie.designpatterns.builder.Medecin;
+import pharmacie.designpatterns.builder.Patient;
+import pharmacie.designpatterns.builder.Prescription;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -49,7 +51,13 @@ public class PatientModelDB implements DAO<Patient>, PatientSpecial {
                 if (rs.next()) {
                     int idPatient = rs.getInt(1);
 
-                    return new Patient(idPatient, patient.getNss(), patient.getNom(), patient.getPrenom(), patient.getDateNaissance());
+                    return new Patient.PatientBuilder()
+                            .setId(idPatient)
+                            .setNss(patient.getNss())
+                            .setNom(patient.getNom())
+                            .setPrenom(patient.getPrenom())
+                            .setDateNaissance(patient.getDateNaissance())
+                            .build();
                 } else {
                     logger.error("record introuvable");
                 }
@@ -77,7 +85,13 @@ public class PatientModelDB implements DAO<Patient>, PatientSpecial {
                 String prenom = rs.getString(4);
                 LocalDate datenaissance = rs.getDate(5).toLocalDate();
 
-                return new Patient(idPatient, nss, nom, prenom, datenaissance);
+                return new Patient.PatientBuilder()
+                        .setId(idPatient)
+                        .setNss(nss)
+                        .setNom(nom)
+                        .setPrenom(prenom)
+                        .setDateNaissance(datenaissance)
+                        .build();
             }
         } catch (SQLException e) {
             logger.error("erreur read :" + e);
@@ -119,7 +133,14 @@ public class PatientModelDB implements DAO<Patient>, PatientSpecial {
                 String prenom = rs.getString(4);
                 LocalDate dateNaissance = rs.getDate(5).toLocalDate();
 
-                Patient patient = new Patient(idPatient, nss, nom, prenom, dateNaissance);
+                Patient patient = new Patient.PatientBuilder()
+                        .setId(idPatient)
+                        .setNss(nss)
+                        .setNom(nom)
+                        .setPrenom(prenom)
+                        .setDateNaissance(dateNaissance)
+                        .build();
+
                 patients.add(patient);
             }
 
@@ -171,7 +192,14 @@ public class PatientModelDB implements DAO<Patient>, PatientSpecial {
                 String tel = rs.getString(4);
                 String nom = rs.getString(5);
 
-                Medecin medecin = new Medecin(idMedecin, matricule, prenom, tel, nom);
+                Medecin medecin = new Medecin.MedecinBuilder()
+                        .setId(idMedecin)
+                        .setMatricule(matricule)
+                        .setNom(nom)
+                        .setPrenom(prenom)
+                        .setTel(tel)
+                        .build();
+
                 medecins.add(medecin);
             }
         } catch (SQLException e) {
@@ -221,7 +249,10 @@ public class PatientModelDB implements DAO<Patient>, PatientSpecial {
                 LocalDate date = rs.getDate(2).toLocalDate();
                 //int idMedecin = rs.getInt(4);
 
-                Prescription pres = new Prescription(idPrescription, date, null, patient);
+                Prescription pres = new Prescription.PrescriptionBuilder()
+                        .setId(idPrescription)
+                        .setDatePrescription(date)
+                        .setPatient(patient).build();
                 prescriptions.add(pres);
             }
         } catch (SQLException e) {

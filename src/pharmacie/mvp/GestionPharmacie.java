@@ -1,9 +1,6 @@
 package pharmacie.mvp;
 
-import pharmacie.metier.Medecin;
-import pharmacie.metier.Medicament;
-import pharmacie.metier.Patient;
-import pharmacie.metier.Prescription;
+import pharmacie.designpatterns.builder.*;
 import pharmacie.mvp.model.*;
 import pharmacie.mvp.presenter.MedecinPresenter;
 import pharmacie.mvp.presenter.MedicamentPresenter;
