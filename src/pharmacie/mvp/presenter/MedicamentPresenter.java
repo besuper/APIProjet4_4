@@ -53,8 +53,14 @@ public class MedicamentPresenter {
         updateList();
     }
 
-    public Medicament update(Medicament medicament) {
-        return model.update(medicament);
+    public void update(Medicament medicament) {
+        Medicament updatedMedicament = model.update(medicament);
+
+        if(updatedMedicament == null){
+            view.affMsg("Erreur de modification");
+        }else {
+            view.affMsg("Medicament modifié");
+        }
     }
 
     public List<Infos> selectionner(Prescription prescription) {

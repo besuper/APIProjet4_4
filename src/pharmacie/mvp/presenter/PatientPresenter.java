@@ -1,6 +1,7 @@
 package pharmacie.mvp.presenter;
 
 import pharmacie.designpatterns.builder.Medecin;
+import pharmacie.designpatterns.builder.Medicament;
 import pharmacie.designpatterns.builder.Patient;
 import pharmacie.designpatterns.builder.Prescription;
 import pharmacie.mvp.model.DAO;
@@ -31,10 +32,6 @@ public class PatientPresenter {
         view.start();
     }
 
-    public List<Medecin> listerMedecin(Patient p) {
-        return ((PatientSpecial) model).getMedecins(p);
-    }
-
     public void addPatient(Patient patient) {
         Patient newPatient = model.add(patient);
 
@@ -59,12 +56,22 @@ public class PatientPresenter {
         updateList();
     }
 
-    public Patient update(Patient patient) {
-        return model.update(patient);
+    public void update(Patient patient) {
+        Patient updatedPatient = model.update(patient);
+
+        if(updatedPatient == null){
+            view.affMsg("Erreur de modification");
+        }else {
+            view.affMsg("Patient modifié");
+        }
     }
 
     public Patient read(int idPatient) {
         return model.read(idPatient);
+    }
+
+    public Patient selectionner() {
+        return view.selectionner(model.getAll());
     }
 
     public double calcTot(Patient p) {
@@ -75,8 +82,8 @@ public class PatientPresenter {
         return ((PatientSpecial) model).prescriptionsDate(patient, debut, fin);
     }
 
-    public Patient selectionner() {
-        return view.selectionner(model.getAll());
+    public List<Medecin> listerMedecin(Patient p) {
+        return ((PatientSpecial) model).getMedecins(p);
     }
 
 }

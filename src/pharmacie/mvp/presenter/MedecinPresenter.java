@@ -51,8 +51,14 @@ public class MedecinPresenter {
         updateList();
     }
 
-    public Medecin update(Medecin medecin) {
-        return model.update(medecin);
+    public void update(Medecin medecin) {
+        Medecin updatedMedecin = model.update(medecin);
+
+        if(updatedMedecin == null){
+            view.affMsg("Erreur de modification");
+        }else {
+            view.affMsg("Medecin modifié");
+        }
     }
 
     public Medecin selectionner() {

@@ -84,8 +84,14 @@ public class PrescriptionPresenter {
         return model.read(idPrescription);
     }
 
-    public Prescription update(Prescription prescription) {
-        return model.update(prescription);
+    public void update(Prescription prescription) {
+        Prescription updatedPrescription = model.update(prescription);
+
+        if(updatedPrescription == null){
+            view.affMsg("Erreur de modification");
+        }else {
+            view.affMsg("Prescription modifié");
+        }
     }
 
 }
