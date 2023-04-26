@@ -7,6 +7,8 @@ import pharmacie.utilitaires.Utilitaire;
 import java.util.List;
 import java.util.Scanner;
 
+import static pharmacie.utilitaires.Utilitaire.saisie;
+
 public class MedecinViewConsole implements MedecinViewInterface {
 
     private MedecinPresenter presenter;
@@ -20,10 +22,8 @@ public class MedecinViewConsole implements MedecinViewInterface {
         menu:
         do {
             System.out.println("1.Ajout\n2.Recherche\n3.Modification\n4.Suppression\n5.Tous\n6.Fin");
-            System.out.println("choix : ");
 
-            int ch = scanner.nextInt();
-            scanner.skip("\n");
+            int ch = saisie("choix: ", Integer::parseInt);
 
             switch (ch) {
                 case 1 -> ajout();
@@ -69,8 +69,7 @@ public class MedecinViewConsole implements MedecinViewInterface {
     }
 
     public void recherche() {
-        System.out.println("ID du medecin recherché: ");
-        int idMedecin = scanner.nextInt();
+        int idMedecin = saisie("ID du medecin recherché: ", Integer::parseInt);
 
         Medecin medecin = presenter.read(idMedecin);
 
@@ -107,10 +106,7 @@ public class MedecinViewConsole implements MedecinViewInterface {
     }
 
     public void suppression() {
-        System.out.println("id du medecin recherché: ");
-
-        int idMedecin = scanner.nextInt();
-        scanner.skip("\n");
+        int idMedecin = saisie("id du medecin recherché: ", Integer::parseInt);
 
         Medecin modifierPatient = new Medecin.MedecinBuilder()
                 .setId(idMedecin)

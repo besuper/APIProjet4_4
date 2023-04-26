@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class Utilitaire {
 
@@ -29,9 +30,7 @@ public class Utilitaire {
     public static int choixElt(List l) {
         int choix;
         do {
-            System.out.println("choix :");
-            choix = sc.nextInt();
-            sc.skip("\n");
+            choix = saisie("choix: ", Integer::parseInt);
         } while (choix < 1 || choix > l.size());
         return choix;
     }
@@ -39,9 +38,7 @@ public class Utilitaire {
     public static int choixEltM(List l) {
         int choix;
         do {
-            System.out.println("choix :");
-            choix = sc.nextInt();
-            sc.skip("\n");
+            choix = saisie("choix: ", Integer::parseInt);
         } while (choix < -1 || choix > l.size());
         return choix;
     }
@@ -57,6 +54,26 @@ public class Utilitaire {
     public static String getDateFrench(LocalDate d){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return dtf.format(d);
+    }
+
+    public static <T> T saisie(String message, Function<String, T> parser) {
+        System.out.println(message);
+
+        String value;
+        T realValue;
+
+        do {
+            try{
+                value = sc.nextLine();
+                realValue = parser.apply(value);
+                break;
+            }catch(Exception e){
+                System.out.println("Erreur de saisie! Recommencez");
+                System.out.println(message);
+            }
+        }while(true);
+
+        return realValue;
     }
 
 }

@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
+import static pharmacie.utilitaires.Utilitaire.saisie;
+
 public class PrescriptionViewConsole implements PrescriptionViewInterface {
 
     private PrescriptionPresenter presenter;
@@ -26,10 +28,8 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
         menu:
         do {
             System.out.println("1.Ajout\n2.Recherche\n3.Modification\n4.Suppression\n5.Tous\n6.Fin");
-            System.out.println("choix : ");
 
-            int ch = scanner.nextInt();
-            scanner.skip("\n");
+            int ch = saisie("choix : ", Integer::parseInt);
 
             switch (ch) {
                 case 1 -> ajout();
@@ -57,8 +57,7 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
     }
 
     public void recherche() {
-        System.out.println("ID de la prescription recherché: ");
-        int idPrescription = scanner.nextInt();
+        int idPrescription = saisie("ID de la prescription recherché: ", Integer::parseInt);
 
         Prescription p = presenter.read(idPrescription);
 
@@ -92,10 +91,7 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
     }
 
     public void suppression() {
-        System.out.println("id de la prescription recherchée: ");
-
-        int idPrescription = scanner.nextInt();
-        scanner.skip("\n");
+        int idPrescription = saisie("ID de la prescription recherché: ", Integer::parseInt);
 
         Prescription modifierPrescription = new Prescription.PrescriptionBuilder()
                 .setId(idPrescription)

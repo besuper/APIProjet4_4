@@ -11,6 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
+import static pharmacie.utilitaires.Utilitaire.saisie;
+
 public class PatientViewConsole implements PatientViewInterface {
 
     private PatientPresenter presenter;
@@ -25,10 +27,8 @@ public class PatientViewConsole implements PatientViewInterface {
         menu:
         do {
             System.out.println("1.Ajout\n2.Recherche\n3.Modification\n4.Suppression\n5.Tous\n6.Fin");
-            System.out.println("choix : ");
 
-            int ch = scanner.nextInt();
-            scanner.skip("\n");
+            int ch = saisie("choix: ", Integer::parseInt);
 
             switch (ch) {
                 case 1 -> ajout();
@@ -74,8 +74,7 @@ public class PatientViewConsole implements PatientViewInterface {
     }
 
     public void recherche() {
-        System.out.println("ID du patient recherché: ");
-        int idPatient = scanner.nextInt();
+        int idPatient = saisie("ID du patient recherché: ", Integer::parseInt);
 
         Patient p = presenter.read(idPatient);
 
@@ -111,10 +110,7 @@ public class PatientViewConsole implements PatientViewInterface {
     }
 
     public void suppression() {
-        System.out.println("id du patient recherché: ");
-
-        int idPatient = scanner.nextInt();
-        scanner.skip("\n");
+        int idPatient = saisie("ID du patient recherché: ", Integer::parseInt);
 
         Patient modifierPatient = new Patient.PatientBuilder()
                 .setId(idPatient)
@@ -128,8 +124,7 @@ public class PatientViewConsole implements PatientViewInterface {
             System.out.println("1.liste des médecins\n2.montant prescriptions\n3.prescriptions\n4.menu principal");
             System.out.println("choix : ");
 
-            int ch = scanner.nextInt();
-            scanner.skip("\n");
+            int ch = saisie("choix : ", Integer::parseInt);
 
             switch (ch) {
                 case 1 -> listeMedecin(patient);

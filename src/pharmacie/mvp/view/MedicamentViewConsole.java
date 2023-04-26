@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static pharmacie.utilitaires.Utilitaire.saisie;
+
 public class MedicamentViewConsole implements MedicamentViewInterface {
 
     private MedicamentPresenter presenter;
@@ -23,10 +25,8 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
         menu:
         do {
             System.out.println("1.Ajout\n2.Recherche\n3.Modification\n4.Suppression\n5.Tous\n6.Fin");
-            System.out.println("choix : ");
 
-            int ch = scanner.nextInt();
-            scanner.skip("\n");
+            int ch = saisie("choix: ", Integer::parseInt);
 
             switch (ch) {
                 case 1 -> ajout();
@@ -71,8 +71,7 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
     }
 
     public void recherche() {
-        System.out.println("ID du médicament recherché: ");
-        int idMedicament = scanner.nextInt();
+        int idMedicament = saisie("ID du médicament recherché: ", Integer::parseInt);
 
         Medicament med = presenter.read(idMedicament);
 
@@ -106,10 +105,7 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
     }
 
     public void suppression() {
-        System.out.println("id du médicament recherché: ");
-
-        int idMedicament = scanner.nextInt();
-        scanner.skip("\n");
+        int idMedicament = saisie("ID du médicament recherché: ", Integer::parseInt);
 
         Medicament modifierMedicament = new Medicament.MedicamentBuilder()
                 .setId(idMedicament)
@@ -151,8 +147,7 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
 
             if (index == -1) break;
 
-            System.out.println("Quantité : ");
-            quantity = scanner.nextInt();
+            quantity = saisie("Quantité : ", Integer::parseInt);
 
             infos.add(new Infos.InfosBuilder()
                     .setQuantite(quantity)
