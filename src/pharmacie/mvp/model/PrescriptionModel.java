@@ -145,14 +145,23 @@ public class PrescriptionModel implements DAO<Prescription> {
 
     @Override
     public boolean remove(Prescription prescription) {
+        String deleteInfos = "DELETE FROM APIINFOS WHERE ID_PRESCRIPTION = ?";
         String queryDelete = "DELETE FROM APIPRESCRIPTION WHERE ID_PRESCRIPTION = ?";
 
-        try (PreparedStatement preparedStatementDelete = dbConnect.prepareStatement(queryDelete)) {
+        try (
+                PreparedStatement preparedStatementDeleteInfos = dbConnect.prepareStatement(deleteInfos);
+                PreparedStatement preparedStatementDelete = dbConnect.prepareStatement(queryDelete)
+        ) {
+            preparedStatementDeleteInfos.setInt(1, prescription.getId());
             preparedStatementDelete.setInt(1, prescription.getId());
 
-            int n = preparedStatementDelete.executeUpdate();
+            int ok = preparedStatementDeleteInfos.executeUpdate();
 
-            return n != 0;
+            if(ok != 0) {
+                int n = preparedStatementDelete.executeUpdate();
+
+                return n != 0;
+            }
         } catch (SQLException e) {
             logger.error("erreur remove :" + e);
         }

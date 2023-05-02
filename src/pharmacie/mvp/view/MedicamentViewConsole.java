@@ -51,16 +51,15 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
 
     public void ajout() {
         System.out.println("Code: ");
-        String code = scanner.next();
+        String code = scanner.nextLine();
 
         System.out.println("Nom: ");
-        String nom = scanner.next();
+        String nom = scanner.nextLine();
 
         System.out.println("Description: ");
-        String description = scanner.next();
+        String description = scanner.nextLine();
 
-        System.out.println("Prix unitaire: ");
-        double prixUnitaire = scanner.nextDouble();
+        double prixUnitaire = Utilitaire.saisie("Prix unitaire", Double::parseDouble);
 
         presenter.addMedicament(new Medicament.MedicamentBuilder()
                 .setCode(code)
