@@ -48,11 +48,16 @@ public class PrescriptionPresenter {
         Medecin medecin = medecinPresenter.selectionner();
         Patient patient = patientPresenter.selectionner();
 
-        Prescription newPrescription = new Prescription.PrescriptionBuilder()
-                .setDatePrescription(LocalDate.now())
-                .setMedecin(medecin)
-                .setPatient(patient)
-                .build();
+        Prescription newPrescription = null;
+        try {
+            newPrescription = new Prescription.PrescriptionBuilder()
+                    .setDatePrescription(LocalDate.now())
+                    .setMedecin(medecin)
+                    .setPatient(patient)
+                    .build();
+        } catch (Exception e) {
+            view.affMsg("Impossible de créer la prescription");
+        }
 
         List<Infos> infos = medicamentPresenter.selectionner(newPrescription);
         newPrescription.setInfos(infos);

@@ -138,6 +138,8 @@ public class PrescriptionModel implements DAO<Prescription> {
 
         } catch (SQLException e) {
             logger.error("erreur getAll :" + e);
+        } catch (Exception e) {
+            logger.error("Erreur lors de la création de la prescription " + e);
         }
 
         return null;
@@ -222,6 +224,8 @@ public class PrescriptionModel implements DAO<Prescription> {
 
         } catch (SQLException e) {
             logger.error("erreur getAll :" + e);
+        } catch (Exception e) {
+            logger.error("Erreur lors de la création de la prescription " + e);
         }
 
         return prescriptions;

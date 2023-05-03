@@ -135,6 +135,8 @@ public class PatientModelHyb implements DAO<Patient>, PatientSpecial {
             }
         } catch (SQLException e) {
             logger.error("erreur read :" + e);
+        } catch (Exception e) {
+            logger.error("Erreur lors de la création de la prescription " + e);
         }
 
         return null;

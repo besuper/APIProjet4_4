@@ -119,6 +119,8 @@ public class MedecinModel implements DAO<Medecin> {
             }
         } catch (SQLException e) {
             logger.error("erreur read :" + e);
+        } catch (Exception e) {
+            logger.error("Erreur lors de la création de la prescription " + e);
         }
 
         return null;

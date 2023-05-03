@@ -252,11 +252,15 @@ public class PatientModelDB implements DAO<Patient>, PatientSpecial {
                 Prescription pres = new Prescription.PrescriptionBuilder()
                         .setId(idPrescription)
                         .setDatePrescription(date)
-                        .setPatient(patient).build();
+                        .setPatient(patient)
+                        .setMedecin(new Medecin.MedecinBuilder().build()) // Medecin vide
+                        .build();
                 prescriptions.add(pres);
             }
         } catch (SQLException e) {
             logger.error("erreur prescriptionsDate: " + e);
+        } catch (Exception e) {
+            logger.error("erreur création prescription: " + e);
         }
 
         return prescriptions;

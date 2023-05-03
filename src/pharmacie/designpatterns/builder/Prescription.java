@@ -150,7 +150,19 @@ public class Prescription {
             return this;
         }
 
-        public Prescription build() {
+        public Prescription build() throws Exception {
+            if(datePrescription == null) {
+                throw new Exception("La date de prescription ne peut pas être nulle");
+            }
+
+            if(patient == null) {
+                throw new Exception("Le patient ne peut pas être null");
+            }
+
+            if(medecin == null) {
+                throw new Exception("Le medecin ne peut pas être null");
+            }
+
             return new Prescription(this);
         }
     }

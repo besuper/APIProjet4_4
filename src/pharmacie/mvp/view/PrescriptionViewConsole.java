@@ -1,6 +1,8 @@
 package pharmacie.mvp.view;
 
 import pharmacie.designpatterns.builder.Infos;
+import pharmacie.designpatterns.builder.Medecin;
+import pharmacie.designpatterns.builder.Patient;
 import pharmacie.designpatterns.builder.Prescription;
 import pharmacie.mvp.presenter.PrescriptionPresenter;
 import pharmacie.utilitaires.Utilitaire;
@@ -80,12 +82,17 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
         String date = Utilitaire.modifyIfNotBlank("Date de prescription ", Utilitaire.getDateFrench(prescription.getDatePrescription()));
         LocalDate datePrescription = LocalDate.parse(date, formatter);
 
-        Prescription newPrescription = new Prescription.PrescriptionBuilder()
-                .setId(prescription.getId())
-                .setDatePrescription(datePrescription)
-                .setMedecin(prescription.getMedecin())
-                .setPatient(prescription.getPatient())
-                .build();
+        Prescription newPrescription = null;
+        try {
+            newPrescription = new Prescription.PrescriptionBuilder()
+                    .setId(prescription.getId())
+                    .setDatePrescription(datePrescription)
+                    .setMedecin(prescription.getMedecin())
+                    .setPatient(prescription.getPatient())
+                    .build();
+        } catch (Exception e) {
+            affMsg("Impossible de créer la prescription");
+        }
 
         presenter.update(newPrescription);
     }
@@ -93,9 +100,17 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
     public void suppression() {
         int idPrescription = saisie("ID de la prescription recherché: ", Integer::parseInt);
 
-        Prescription modifierPrescription = new Prescription.PrescriptionBuilder()
-                .setId(idPrescription)
-                .build();
+        Prescription modifierPrescription = null;
+        try {
+            modifierPrescription = new Prescription.PrescriptionBuilder()
+                    .setId(idPrescription)
+                    .setDatePrescription(LocalDate.now())
+                    .setMedecin(new Medecin.MedecinBuilder().build())
+                    .setPatient(new Patient.PatientBuilder().build())
+                    .build();
+        } catch (Exception e) {
+            // Affichage inutile ici
+        }
 
         presenter.removePrescription(modifierPrescription);
     }
