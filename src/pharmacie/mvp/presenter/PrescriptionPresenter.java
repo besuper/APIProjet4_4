@@ -68,9 +68,9 @@ public class PrescriptionPresenter {
             view.affMsg("Erreur de création");
         } else {
             view.affMsg("Création de : " + newPrescription);
-        }
 
-        updateList();
+            updateList();
+        }
     }
 
     public void removePrescription(Prescription prescription) {
@@ -78,11 +78,11 @@ public class PrescriptionPresenter {
 
         if (success) {
             view.affMsg("Prescription supprimé");
+
+            updateList();
         } else {
             view.affMsg("Erreur de suppression");
         }
-
-        updateList();
     }
 
     public Prescription read(int idPrescription) {
@@ -96,6 +96,8 @@ public class PrescriptionPresenter {
             view.affMsg("Erreur de modification");
         }else {
             view.affMsg("Prescription modifié");
+
+            updateList();
         }
     }
 

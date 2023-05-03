@@ -73,8 +73,6 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
     }
 
     public void modification() {
-        // FIXME: Modification non prise en compte + modification de date ?
-
         int nl = Utilitaire.choixListe(prescriptions) - 1;
 
         Prescription prescription = prescriptions.get(nl);

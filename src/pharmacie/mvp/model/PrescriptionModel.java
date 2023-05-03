@@ -233,11 +233,11 @@ public class PrescriptionModel implements DAO<Prescription> {
 
     @Override
     public Prescription update(Prescription obj) {
-        String queryUpdateNSS = "UPDATE APIPRESCRIPTION SET dateprescription = ? WHERE ID_MEDECIN = ?";
+        String queryUpdateNSS = "UPDATE APIPRESCRIPTION SET dateprescription = ? WHERE ID_PRESCRIPTION = ?";
 
         try (PreparedStatement preparedStatementUpdate = dbConnect.prepareStatement(queryUpdateNSS)) {
             preparedStatementUpdate.setDate(1, Date.valueOf(obj.getDatePrescription()));
-            preparedStatementUpdate.setInt(2, obj.getMedecin().getId());
+            preparedStatementUpdate.setInt(2, obj.getId());
 
             int n = preparedStatementUpdate.executeUpdate();
 
