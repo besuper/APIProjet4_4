@@ -39,9 +39,9 @@ public class PatientPresenter {
             view.affMsg("Erreur de création");
         } else {
             view.affMsg("Création de : " + newPatient);
-        }
 
-        updateList();
+            updateList();
+        }
     }
 
     public void removePatient(Patient patient) {
@@ -49,11 +49,11 @@ public class PatientPresenter {
 
         if (success) {
             view.affMsg("Patient supprimé");
+
+            updateList();
         } else {
             view.affMsg("Erreur de suppression");
         }
-
-        updateList();
     }
 
     public void update(Patient patient) {
@@ -63,6 +63,8 @@ public class PatientPresenter {
             view.affMsg("Erreur de modification");
         }else {
             view.affMsg("Patient modifié");
+
+            updateList();
         }
     }
 

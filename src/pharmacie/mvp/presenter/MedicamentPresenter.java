@@ -36,9 +36,9 @@ public class MedicamentPresenter {
             view.affMsg("Erreur de création");
         } else {
             view.affMsg("Création de : " + newMedicament);
-        }
 
-        updateList();
+            updateList();
+        }
     }
 
     public void removeMedicament(Medicament medicament) {
@@ -46,11 +46,11 @@ public class MedicamentPresenter {
 
         if (success) {
             view.affMsg("Médicament supprimé");
+
+            updateList();
         } else {
             view.affMsg("Erreur de suppression");
         }
-
-        updateList();
     }
 
     public void update(Medicament medicament) {
@@ -60,6 +60,8 @@ public class MedicamentPresenter {
             view.affMsg("Erreur de modification");
         }else {
             view.affMsg("Medicament modifié");
+
+            updateList();
         }
     }
 
