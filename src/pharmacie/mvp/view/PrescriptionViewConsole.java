@@ -10,7 +10,6 @@ import pharmacie.utilitaires.Utilitaire;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Scanner;
 
 import static pharmacie.utilitaires.Utilitaire.saisie;
 
@@ -19,7 +18,6 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
     private PrescriptionPresenter presenter;
 
     private List<Prescription> prescriptions;
-    private final Scanner scanner = new Scanner(System.in);
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -75,7 +73,9 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
     }
 
     public void modification() {
-        int nl = Utilitaire.choixElt(prescriptions) - 1;
+        // FIXME: Modification non prise en compte + modification de date ?
+
+        int nl = Utilitaire.choixListe(prescriptions) - 1;
 
         Prescription prescription = prescriptions.get(nl);
 

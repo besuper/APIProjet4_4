@@ -237,6 +237,7 @@ public class PrescriptionModel implements DAO<Prescription> {
 
         try (PreparedStatement preparedStatementUpdate = dbConnect.prepareStatement(queryUpdateNSS)) {
             preparedStatementUpdate.setDate(1, Date.valueOf(obj.getDatePrescription()));
+            preparedStatementUpdate.setInt(2, obj.getMedecin().getId());
 
             int n = preparedStatementUpdate.executeUpdate();
 
