@@ -241,13 +241,14 @@ public class PatientModelHyb implements DAO<Patient>, PatientSpecial {
 
     @Override
     public Patient update(Patient obj) {
-        String queryUpdateNSS = "UPDATE APIPATIENT SET nss = ?, nom = ?, prenom = ?, datenaissance = ? WHERE ID_MEDECIN = ?";
+        String queryUpdateNSS = "UPDATE APIPATIENT SET nss = ?, nom = ?, prenom = ?, datenaissance = ? WHERE ID_PATIENT = ?";
 
         try (PreparedStatement preparedStatementUpdate = dbConnect.prepareStatement(queryUpdateNSS)) {
-            preparedStatementUpdate.setString(1, obj.getNom());
+            preparedStatementUpdate.setString(1, obj.getNss());
             preparedStatementUpdate.setString(2, obj.getNom());
             preparedStatementUpdate.setString(3, obj.getPrenom());
             preparedStatementUpdate.setDate(4, Date.valueOf(obj.getDateNaissance()));
+            preparedStatementUpdate.setInt(5, obj.getId());
 
             int n = preparedStatementUpdate.executeUpdate();
 

@@ -77,10 +77,6 @@ public class MedecinViewConsole implements MedecinViewInterface {
             System.out.println("Medecin introuvable !");
         }else {
             System.out.println(medecin);
-
-            for(Prescription pres : medecin.getPrescription()) {
-                System.out.println(pres);
-            }
         }
     }
 

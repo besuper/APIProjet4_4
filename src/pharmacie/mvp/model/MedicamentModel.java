@@ -150,13 +150,14 @@ public class MedicamentModel implements DAO<Medicament> {
 
     @Override
     public Medicament update(Medicament obj) {
-        String queryUpdateNSS = "UPDATE APIMEDICAMENT SET code = ?, nom = ?, description = ?, prixunitaire = ? WHERE ID_MEDECIN = ?";
+        String queryUpdateNSS = "UPDATE APIMEDICAMENT SET code = ?, nom = ?, description = ?, prixunitaire = ? WHERE ID_MEDICAMENT = ?";
 
         try (PreparedStatement preparedStatementUpdate = dbConnect.prepareStatement(queryUpdateNSS)) {
             preparedStatementUpdate.setString(1, obj.getCode());
             preparedStatementUpdate.setString(2, obj.getNom());
             preparedStatementUpdate.setString(3, obj.getDescription());
             preparedStatementUpdate.setDouble(4, obj.getPrixUnitaire());
+            preparedStatementUpdate.setInt(5, obj.getId());
 
             int n = preparedStatementUpdate.executeUpdate();
 

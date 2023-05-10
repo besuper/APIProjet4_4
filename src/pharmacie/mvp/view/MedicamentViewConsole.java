@@ -82,7 +82,7 @@ public class MedicamentViewConsole implements MedicamentViewInterface {
     }
 
     public void modification() {
-        int nl = Utilitaire.choixElt(medicaments) - 1;
+        int nl = Utilitaire.choixListe(medicaments) - 1;
 
         Medicament medicament = medicaments.get(nl);
 

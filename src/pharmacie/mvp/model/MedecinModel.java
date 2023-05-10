@@ -58,7 +58,7 @@ public class MedecinModel implements DAO<Medecin> {
 
     @Override
     public Medecin read(int id) {
-        String query = "SELECT * FROM APIREADMEDECIN WHERE id_medecin = ?";
+        String query = "SELECT * FROM APIMEDECIN WHERE id_medecin = ?";
 
         try (PreparedStatement preparedStatement = dbConnect.prepareStatement(query)
         ) {
@@ -69,58 +69,19 @@ public class MedecinModel implements DAO<Medecin> {
             if (rs.next()) {
                 String matricule = rs.getString("matricule");
                 String tel = rs.getString("tel");
-                String nom_medecin = rs.getString("nom_medecin");
-                String prenom_medecin = rs.getString("prenom_medecin");
-                Medecin medecin = new Medecin.MedecinBuilder()
+                String nom_medecin = rs.getString("nom");
+                String prenom_medecin = rs.getString("prenom");
+
+                return new Medecin.MedecinBuilder()
                         .setId(id)
                         .setMatricule(matricule)
                         .setNom(nom_medecin)
                         .setPrenom(prenom_medecin)
                         .setTel(tel)
                         .build();
-
-                int idPatient = rs.getInt("id_patient");
-                String nss = rs.getString("nss");
-                String nom_patient = rs.getString("nom_patient");
-                String prenom_patient = rs.getString("prenom_patient");
-                LocalDate dateNaissance = rs.getDate("datenaissance").toLocalDate();
-                Patient patient = new Patient.PatientBuilder()
-                        .setId(idPatient)
-                        .setNss(nss)
-                        .setNom(nom_patient)
-                        .setPrenom(prenom_patient)
-                        .setDateNaissance(dateNaissance)
-                        .build();
-
-                List<Prescription> prescriptions = new ArrayList<>();
-
-                int idPrescription = rs.getInt("id_prescription");
-
-                do {
-                    if (idPrescription == 0) {
-                        break;
-                    }
-
-                    LocalDate datePrescription = rs.getDate("dateprescription").toLocalDate();
-
-                    Prescription prescription = new Prescription.PrescriptionBuilder()
-                            .setId(idPrescription)
-                            .setDatePrescription(datePrescription)
-                            .setMedecin(medecin)
-                            .setPatient(patient)
-                            .build();
-
-                    prescriptions.add(prescription);
-                } while (rs.next());
-
-                medecin.setPrescription(prescriptions);
-
-                return medecin;
             }
         } catch (SQLException e) {
             logger.error("erreur read :" + e);
-        } catch (Exception e) {
-            logger.error("Erreur lors de la création de la prescription " + e);
         }
 
         return null;

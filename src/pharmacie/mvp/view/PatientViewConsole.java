@@ -88,14 +88,14 @@ public class PatientViewConsole implements PatientViewInterface {
     }
 
     public void modification() {
-        int nl = Utilitaire.choixElt(patients) - 1;
+        int nl = Utilitaire.choixListe(patients) - 1;
 
         Patient patient = patients.get(nl);
 
-        String nss = Utilitaire.modifyIfNotBlank("nss", patient.getNss());
-        String nom = Utilitaire.modifyIfNotBlank("nom", patient.getNom());
-        String prenom = Utilitaire.modifyIfNotBlank("prenom", patient.getPrenom());
-        String date = Utilitaire.modifyIfNotBlank("Dete de naissance ", Utilitaire.getDateFrench(patient.getDateNaissance()));
+        String nss = Utilitaire.modifyIfNotBlank("NSS", patient.getNss());
+        String nom = Utilitaire.modifyIfNotBlank("Nom", patient.getNom());
+        String prenom = Utilitaire.modifyIfNotBlank("Prénom", patient.getPrenom());
+        String date = Utilitaire.modifyIfNotBlank("Date de naissance ", Utilitaire.getDateFrench(patient.getDateNaissance()));
         LocalDate dateNaissance = LocalDate.parse(date, formatter);
 
         Patient newPatient = new Patient.PatientBuilder()
@@ -122,7 +122,6 @@ public class PatientViewConsole implements PatientViewInterface {
     private void opSpeciales(Patient patient) {
         do {
             System.out.println("1.liste des médecins\n2.montant prescriptions\n3.prescriptions\n4.menu principal");
-            System.out.println("choix : ");
 
             int ch = saisie("choix : ", Integer::parseInt);
 
