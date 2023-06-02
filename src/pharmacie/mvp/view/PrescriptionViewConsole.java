@@ -78,7 +78,7 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
         Prescription prescription = prescriptions.get(nl);
 
         String date = Utilitaire.modifyIfNotBlank("Date de prescription ", Utilitaire.getDateFrench(prescription.getDatePrescription()));
-        LocalDate datePrescription = null;
+        LocalDate datePrescription;
 
         try {
             datePrescription = LocalDate.parse(date, formatter);

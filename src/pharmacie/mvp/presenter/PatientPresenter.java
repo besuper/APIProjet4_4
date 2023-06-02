@@ -1,7 +1,6 @@
 package pharmacie.mvp.presenter;
 
 import pharmacie.designpatterns.builder.Medecin;
-import pharmacie.designpatterns.builder.Medicament;
 import pharmacie.designpatterns.builder.Patient;
 import pharmacie.designpatterns.builder.Prescription;
 import pharmacie.mvp.model.DAO;

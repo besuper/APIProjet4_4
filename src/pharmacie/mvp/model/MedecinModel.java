@@ -4,11 +4,8 @@ import myconnections.DBConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pharmacie.designpatterns.builder.Medecin;
-import pharmacie.designpatterns.builder.Patient;
-import pharmacie.designpatterns.builder.Prescription;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -95,7 +95,7 @@ public class PatientViewConsole implements PatientViewInterface {
         String nom = Utilitaire.modifyIfNotBlank("Nom", patient.getNom());
         String prenom = Utilitaire.modifyIfNotBlank("Prénom", patient.getPrenom());
         String date = Utilitaire.modifyIfNotBlank("Date de naissance ", Utilitaire.getDateFrench(patient.getDateNaissance()));
-        LocalDate dateNaissance = null;
+        LocalDate dateNaissance;
 
         try {
             dateNaissance = LocalDate.parse(date, formatter);

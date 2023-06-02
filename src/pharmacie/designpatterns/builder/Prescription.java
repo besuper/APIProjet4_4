@@ -40,11 +40,6 @@ public class Prescription {
 
     /**
      * Constructeur de la Prescription
-     *
-     * @param id               Identifiant unique
-     * @param datePrescription Date de la prescription
-     * @param medecin          Medecin qui prescrit
-     * @param patient          Patient concerné
      */
     private Prescription(PrescriptionBuilder builder) {
         this.id = builder.id;
