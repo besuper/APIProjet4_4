@@ -147,6 +147,7 @@ public class MedecinModel implements DAO<Medecin> {
             preparedStatementUpdate.setString(2, obj.getNom());
             preparedStatementUpdate.setString(3, obj.getPrenom());
             preparedStatementUpdate.setString(4, obj.getTel());
+            preparedStatementUpdate.setInt(5, obj.getId());
 
             int n = preparedStatementUpdate.executeUpdate();
 

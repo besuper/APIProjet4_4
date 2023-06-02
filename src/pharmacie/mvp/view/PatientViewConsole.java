@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
 import static pharmacie.utilitaires.Utilitaire.saisie;
 
@@ -61,9 +62,7 @@ public class PatientViewConsole implements PatientViewInterface {
         System.out.println("Prénom: ");
         String prenom = scanner.next();
 
-        System.out.println("Date de naissance (jj/mm/aaaa): ");
-        String date = scanner.next();
-        LocalDate dateNaissance = LocalDate.parse(date, formatter);
+        LocalDate dateNaissance = (LocalDate) Utilitaire.saisie("Date de naissance (jj/mm/aaaa): ", (Function<String, Object>) s -> LocalDate.parse(s, formatter));
 
         presenter.addPatient(new Patient.PatientBuilder()
                 .setNss(nss)
@@ -96,7 +95,15 @@ public class PatientViewConsole implements PatientViewInterface {
         String nom = Utilitaire.modifyIfNotBlank("Nom", patient.getNom());
         String prenom = Utilitaire.modifyIfNotBlank("Prénom", patient.getPrenom());
         String date = Utilitaire.modifyIfNotBlank("Date de naissance ", Utilitaire.getDateFrench(patient.getDateNaissance()));
-        LocalDate dateNaissance = LocalDate.parse(date, formatter);
+        LocalDate dateNaissance = null;
+
+        try {
+            dateNaissance = LocalDate.parse(date, formatter);
+        } catch (Exception e) {
+            System.out.println("Format de date invalide !");
+
+            return;
+        }
 
         Patient newPatient = new Patient.PatientBuilder()
                 .setId(patient.getId())

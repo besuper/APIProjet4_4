@@ -81,7 +81,7 @@ public class MedecinViewConsole implements MedecinViewInterface {
     }
 
     public void modification() {
-        int nl = Utilitaire.choixElt(medecins) - 1;
+        int nl = Utilitaire.choixListe(medecins) - 1;
 
         Medecin medecin = medecins.get(nl);
 

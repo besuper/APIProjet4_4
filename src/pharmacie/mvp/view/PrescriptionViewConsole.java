@@ -66,7 +66,7 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
         } else {
             System.out.println(p);
 
-            for(Infos info : p.getInfos()) {
+            for (Infos info : p.getInfos()) {
                 System.out.println(info);
             }
         }
@@ -78,7 +78,15 @@ public class PrescriptionViewConsole implements PrescriptionViewInterface {
         Prescription prescription = prescriptions.get(nl);
 
         String date = Utilitaire.modifyIfNotBlank("Date de prescription ", Utilitaire.getDateFrench(prescription.getDatePrescription()));
-        LocalDate datePrescription = LocalDate.parse(date, formatter);
+        LocalDate datePrescription = null;
+
+        try {
+            datePrescription = LocalDate.parse(date, formatter);
+        } catch (Exception e) {
+            System.out.println("Format de date invalide !");
+
+            return;
+        }
 
         Prescription newPrescription = null;
         try {
