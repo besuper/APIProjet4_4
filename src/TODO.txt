@@ -1,2 +1,0 @@
-Utiliser les procédures/fonctions embarqués de SGBD => bonus pas obligatoire
-Utiliser les design pattern => obligatoire
